@@ -6,12 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using NPerfRunner.ViewModels;
+using NPerfRunner.Dialogs;
+using System.Threading.Tasks;
+using System.Reactive.Linq;
 
-namespace NPerfRunner.ViewModels
+namespace NPerfRunner.Wpf.ViewModels
 {
     public class SettingsViewModel : ReactiveObject, ISettingsViewModel
     {
-        public IReactiveCommand LoadTool { get; protected set; }
+        public ReactiveAsyncCommand LoadTool { get; protected set; }
         public IReactiveCommand LoadSubject { get; protected set; }
         public IReactiveCommand StartTesting { get; protected set; }
         public IReactiveCommand StopTesting { get; protected set; }
@@ -32,12 +36,17 @@ namespace NPerfRunner.ViewModels
 
         public SettingsViewModel(IScreen screen)
         {
-            
             HostScreen = screen;
             
-            LoadTool = new ReactiveCommand();
+            LoadTool = new ReactiveAsyncCommand();
 
-            LoadTool.Subscribe(_ => MessageBox.Show(""));
+            LoadTool.RegisterAsyncAction(OnLoadTool, RxApp.DeferredScheduler);
+            IoC.Instance.Resolve<ErrorHandler>().HandleErrors(LoadTool);
+        }
+
+        private void OnLoadTool(object param)
+        {
+            IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly();
         }
     }
 }

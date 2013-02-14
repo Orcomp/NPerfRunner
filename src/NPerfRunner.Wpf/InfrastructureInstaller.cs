@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using NPerfRunner.Dialogs;
 using NPerfRunner.ViewModels;
-using NPerfRunner.Views;
+using NPerfRunner.Wpf.Dialogs;
+using NPerfRunner.Wpf.ViewModels;
+using NPerfRunner.Wpf.Views;
 using ReactiveUI;
 using ReactiveUI.Routing;
+using ReactiveUI.Xaml;
 
 namespace NPerfRunner.Wpf
 {
@@ -15,13 +20,13 @@ namespace NPerfRunner.Wpf
     {
         public static void Install()
         {
-
-
+            IoC.Instance.RegisterSingleton(typeof(ErrorHandler));
             IoC.Instance.RegisterSingleton(typeof(IScreen), typeof(MainWindowViewModel));
             IoC.Instance.RegisterSingleton(typeof(ISettingsViewModel), typeof(SettingsViewModel));
             IoC.Instance.RegisterSingleton(typeof(IViewFor<ISettingsViewModel>), typeof(SettingsView));
+            IoC.Instance.RegisterSingleton(typeof(ILoadAssemblyDialog), typeof(LoadAssemblyDialog));
 
-            RxApp.DeferredScheduler = new DispatcherScheduler(Application.Current.Dispatcher);
+            RxApp.DeferredScheduler = new DispatcherScheduler(Application.Current.Dispatcher);                      
 
             RxRouting.ViewModelToViewFunc = str =>
                {

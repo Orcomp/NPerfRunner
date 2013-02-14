@@ -8,7 +8,6 @@ using System.Windows;
 using ReactiveUI;
 using NPerfRunner.Wpf;
 using ReactiveUI.Routing;
-using NPerfRunner.Views;
 using System.Reactive.Concurrency;
 
 namespace NPerfRunner

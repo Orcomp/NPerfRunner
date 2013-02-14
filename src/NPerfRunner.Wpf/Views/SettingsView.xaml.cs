@@ -21,7 +21,7 @@ using ReactiveUI.Xaml;
 using Microsoft.Win32;
 using System.Reflection;
 
-namespace NPerfRunner.Views
+namespace NPerfRunner.Wpf.Views
 {
     /// <summary>
     /// Логика взаимодействия для SettingsView.xaml

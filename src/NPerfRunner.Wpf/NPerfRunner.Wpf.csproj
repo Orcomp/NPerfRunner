@@ -129,9 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialogs\LoadAssemblyDialog.cs" />
+    <Compile Include="ErrorHandler.cs" />
     <Compile Include="InfrastructureInstaller.cs" />
     <Compile Include="IoC.cs" />
-    <Compile Include="Models\SettingsFacade.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\SettingsView.xaml.cs">

@@ -37,6 +37,15 @@ namespace NPerfRunner.Wpf
             }
         }
 
+        public void RegisterSingleton(Type service, string name = null)
+        {
+            var binding = container.Bind(service).ToSelf().InSingletonScope();
+            if (!string.IsNullOrEmpty(name))
+            {
+                binding.Named(name);
+            }
+        }
+
         public void RegisterType(Type service, Type type, string name = null)
         {
             var binding = container.Bind(service).To(type);
@@ -44,6 +53,11 @@ namespace NPerfRunner.Wpf
             {
                 binding.Named(name);
             }
+        }        
+
+        public T Resolve<T>(string name = null)
+        {
+            return (T)this.Resolve(typeof(T), name);
         }
 
         public object Resolve(Type type, string name = null)

@@ -10,7 +10,7 @@ namespace NPerfRunner.ViewModels
 {
     public interface ISettingsViewModel : IRoutableViewModel
     {
-        IReactiveCommand LoadTool { get; }
+        ReactiveAsyncCommand LoadTool { get; }
         IReactiveCommand LoadSubject { get; }
         IReactiveCommand StartTesting { get; }
         IReactiveCommand StopTesting { get; }

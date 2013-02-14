@@ -15,8 +15,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ReactiveUI.Routing;
 using NPerfRunner.Wpf;
+using NPerfRunner.Wpf.ViewModels;
+using ReactiveUI.Xaml;
+using System.Threading.Tasks;
+using System.Reactive.Linq;
 
-namespace NPerfRunner
+namespace NPerfRunner.Wpf
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -25,13 +29,12 @@ namespace NPerfRunner
     {
         public MainWindow()
         {
-            
-            //ViewModel = new MainWindowViewModel();
             InitializeComponent();
-         //   MainWindowViewModel MainWindowViewModel = new MainWindowViewModel();
-            //this.DataContext = RxApp.GetService<IScreen>();
+
             InfrastructureInstaller.Install();
             this.SettingsHost.ViewModel = RxApp.GetService<ISettingsViewModel>();
+
+            UserError.RegisterHandler((Func<UserError, IObservable<RecoveryOptionResult>>)IoC.Instance.Resolve<ErrorHandler>().HandleError);  
         }
         
         public MainWindowViewModel ViewModel

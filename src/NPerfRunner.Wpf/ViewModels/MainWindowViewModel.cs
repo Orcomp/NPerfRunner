@@ -1,5 +1,4 @@
 ﻿using Ninject;
-using NPerfRunner.Views;
 using ReactiveUI;
 using ReactiveUI.Routing;
 using System;
@@ -11,7 +10,7 @@ using System.Windows.Threading;
 using System.Reactive.Concurrency;
 using System.Windows;
 
-namespace NPerfRunner.ViewModels
+namespace NPerfRunner.Wpf.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject, IScreen
     {
