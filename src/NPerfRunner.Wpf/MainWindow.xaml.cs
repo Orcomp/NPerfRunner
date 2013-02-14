@@ -1,27 +1,12 @@
-﻿using NPerfRunner.ViewModels;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ReactiveUI.Routing;
-using NPerfRunner.Wpf;
-using NPerfRunner.Wpf.ViewModels;
-using ReactiveUI.Xaml;
-using System.Threading.Tasks;
-using System.Reactive.Linq;
-
-namespace NPerfRunner.Wpf
+﻿namespace NPerfRunner.Wpf
 {
+    using System;
+    using System.Windows;
+    using NPerfRunner.ViewModels;
+    using NPerfRunner.Wpf.ViewModels;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
+
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
@@ -29,7 +14,7 @@ namespace NPerfRunner.Wpf
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             InfrastructureInstaller.Install();
             this.SettingsHost.ViewModel = RxApp.GetService<ISettingsViewModel>();
@@ -39,16 +24,17 @@ namespace NPerfRunner.Wpf
         
         public MainWindowViewModel ViewModel
         {
-            get { return (MainWindowViewModel)GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value); }
+            get { return (MainWindowViewModel)this.GetValue(ViewModelProperty); }
+            set { this.SetValue(ViewModelProperty, value); }
         }
-        public static readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register("ViewModel", typeof(MainWindowViewModel), typeof(MainWindow), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
+            "ViewModel", typeof(MainWindowViewModel), typeof(MainWindow), new PropertyMetadata(null));
 
         object IViewFor.ViewModel
         {
-            get { return ViewModel; }
-            set { ViewModel = (MainWindowViewModel)value; }
+            get { return this.ViewModel; }
+            set { this.ViewModel = (MainWindowViewModel)value; }
         }
     }
 }

@@ -1,26 +1,23 @@
-﻿using ReactiveUI;
-using ReactiveUI.Routing;
-using ReactiveUI.Xaml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using NPerfRunner.ViewModels;
-using NPerfRunner.Dialogs;
-using System.Threading.Tasks;
-using System.Reactive.Linq;
-
-namespace NPerfRunner.Wpf.ViewModels
+﻿namespace NPerfRunner.Wpf.ViewModels
 {
+    using NPerfRunner.Dialogs;
+    using NPerfRunner.ViewModels;
+    using ReactiveUI;
+    using ReactiveUI.Routing;
+    using ReactiveUI.Xaml;
+
     public class SettingsViewModel : ReactiveObject, ISettingsViewModel
     {
         public ReactiveAsyncCommand LoadTool { get; protected set; }
+
         public IReactiveCommand LoadSubject { get; protected set; }
+
         public IReactiveCommand StartTesting { get; protected set; }
+
         public IReactiveCommand StopTesting { get; protected set; }
 
         private string testerFileName;
+
         public string TesterFileName
         {
             get { return this.testerFileName; }
@@ -36,12 +33,12 @@ namespace NPerfRunner.Wpf.ViewModels
 
         public SettingsViewModel(IScreen screen)
         {
-            HostScreen = screen;
+            this.HostScreen = screen;
             
-            LoadTool = new ReactiveAsyncCommand();
+            this.LoadTool = new ReactiveAsyncCommand();
 
-            LoadTool.RegisterAsyncAction(OnLoadTool, RxApp.DeferredScheduler);
-            IoC.Instance.Resolve<ErrorHandler>().HandleErrors(LoadTool);
+            this.LoadTool.RegisterAsyncAction(this.OnLoadTool, RxApp.DeferredScheduler);
+            IoC.Instance.Resolve<ErrorHandler>().HandleErrors(this.LoadTool);
         }
 
         private void OnLoadTool(object param)

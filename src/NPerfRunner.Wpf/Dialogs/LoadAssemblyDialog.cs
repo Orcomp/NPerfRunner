@@ -1,10 +1,6 @@
 ﻿namespace NPerfRunner.Wpf.Dialogs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
-    using System.Text;
     using Microsoft.Win32;
     using NPerfRunner.Dialogs;
 
@@ -19,12 +15,7 @@
 
         public Assembly LoadAssembly()
         {
-            if (!this.dialog.ShowDialog().Value)
-            {
-                return null;
-            }
-
-            return Assembly.LoadFile(this.dialog.FileName);
+            return !this.dialog.ShowDialog().Value ? null : Assembly.LoadFile(this.dialog.FileName);
         }
     }
 }

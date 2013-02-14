@@ -1,17 +1,8 @@
-﻿using Ninject;
-using ReactiveUI;
-using ReactiveUI.Routing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Windows.Threading;
-using System.Reactive.Concurrency;
-using System.Windows;
-
-namespace NPerfRunner.Wpf.ViewModels
+﻿namespace NPerfRunner.Wpf.ViewModels
 {
+    using ReactiveUI;
+    using ReactiveUI.Routing;
+
     public class MainWindowViewModel : ReactiveObject, IScreen
     {
 

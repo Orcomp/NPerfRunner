@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using NPerfRunner.Dialogs;
-using NPerfRunner.ViewModels;
-using NPerfRunner.Wpf.Dialogs;
-using NPerfRunner.Wpf.ViewModels;
-using NPerfRunner.Wpf.Views;
-using ReactiveUI;
-using ReactiveUI.Routing;
-using ReactiveUI.Xaml;
-
-namespace NPerfRunner.Wpf
+﻿namespace NPerfRunner.Wpf
 {
+    using System;
+    using System.Linq;
+    using System.Reactive.Concurrency;
+    using System.Windows;
+    using NPerfRunner.Dialogs;
+    using NPerfRunner.ViewModels;
+    using NPerfRunner.Wpf.Dialogs;
+    using NPerfRunner.Wpf.ViewModels;
+    using NPerfRunner.Wpf.Views;
+    using ReactiveUI;
+    using ReactiveUI.Routing;
+
     internal class InfrastructureInstaller
     {
         public static void Install()
@@ -29,10 +25,11 @@ namespace NPerfRunner.Wpf
             RxApp.DeferredScheduler = new DispatcherScheduler(Application.Current.Dispatcher);                      
 
             RxRouting.ViewModelToViewFunc = str =>
-               {
-                   var viewModelType = AppDomain.CurrentDomain
-                       .GetAssemblies().SelectMany(x => x.GetTypes())
-                       .Where(type => type.AssemblyQualifiedName.Equals(str)).FirstOrDefault();
+                {
+                    var viewModelType =
+                        AppDomain.CurrentDomain.GetAssemblies()
+                                 .SelectMany(x => x.GetTypes())
+                                 .FirstOrDefault(type => type.AssemblyQualifiedName.Equals(str));
 
                    if (viewModelType == null)
                    {

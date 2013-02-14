@@ -48,13 +48,13 @@
       <HintPath>..\..\..\packages\Microsoft.Bcl.Async.1.0.14-rc\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="NPerf.Core">
-      <HintPath>..\..\packages\NPerf\NPerf.Core.dll</HintPath>
+      <HintPath>..\..\libs\NPerf\NPerf.Core.dll</HintPath>
     </Reference>
     <Reference Include="NPerf.Framework">
-      <HintPath>..\..\packages\NPerf\NPerf.Framework.dll</HintPath>
+      <HintPath>..\..\libs\NPerf\NPerf.Framework.dll</HintPath>
     </Reference>
     <Reference Include="NPerf.ReportGenerator">
-      <HintPath>..\..\packages\NPerf\NPerf.ReportGenerator.dll</HintPath>
+      <HintPath>..\..\libs\NPerf\NPerf.ReportGenerator.dll</HintPath>
     </Reference>
     <Reference Include="NSort">
       <HintPath>.\NSort.dll</HintPath>
@@ -137,7 +137,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.0-rc\tools\Microsoft.Bcl.Build.targets" />
+  <Import Project="..\..\libs\Microsoft.Bcl.Build.1.0.0-rc\tools\Microsoft.Bcl.Build.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

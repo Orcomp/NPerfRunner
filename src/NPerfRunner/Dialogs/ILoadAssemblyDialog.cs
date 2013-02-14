@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-
-namespace NPerfRunner.Dialogs
+﻿namespace NPerfRunner.Dialogs
 {
+    using System.Reflection;
+
     public interface ILoadAssemblyDialog
     {
         Assembly LoadAssembly();

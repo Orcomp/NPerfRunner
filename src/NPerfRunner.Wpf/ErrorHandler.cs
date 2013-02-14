@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using ReactiveUI.Xaml;
-
-namespace NPerfRunner.Wpf
+﻿namespace NPerfRunner.Wpf
 {
+    using System;
+    using System.Reactive.Linq;
+    using System.Windows;
+    using ReactiveUI.Xaml;
+
     internal class ErrorHandler
     {
-        public IDisposable HandleErrors(ReactiveAsyncCommand command)
+        public IDisposable HandleErrors(IReactiveCommand command)
         {
             return command.ThrownExceptions.SelectMany(ex => UserError.Throw(ex.Message, ex.InnerException))
                 .Subscribe(result =>
-                {
-                    switch(result)
                     {
-                        case RecoveryOptionResult.RetryOperation:
+                        switch (result)
+                        {
+                            case RecoveryOptionResult.RetryOperation:
                             command.Execute(null);
                             break;
                         case RecoveryOptionResult.FailOperation:

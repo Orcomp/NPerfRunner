@@ -57,7 +57,7 @@
       <HintPath>..\..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NPerf.Lab">
-      <HintPath>..\packages\NPerf2\NPerf.Lab.dll</HintPath>
+      <HintPath>..\libs\NPerf2\NPerf.Lab.dll</HintPath>
     </Reference>
     <Reference Include="OxyPlot">
       <HintPath>..\..\packages\OxyPlot.Core.2013.1.32.1\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
@@ -191,7 +191,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.0-rc\tools\Microsoft.Bcl.Build.targets" />
+  <Import Project="..\libs\Microsoft.Bcl.Build.1.0.0-rc\tools\Microsoft.Bcl.Build.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

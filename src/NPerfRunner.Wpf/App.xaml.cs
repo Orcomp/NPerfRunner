@@ -1,17 +1,7 @@
-﻿using NPerfRunner.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Windows;
-using ReactiveUI;
-using NPerfRunner.Wpf;
-using ReactiveUI.Routing;
-using System.Reactive.Concurrency;
-
-namespace NPerfRunner
+﻿namespace NPerfRunner
 {
+    using System.Windows;
+
     /// <summary>
     /// Логика взаимодействия для App.xaml
     /// </summary>
