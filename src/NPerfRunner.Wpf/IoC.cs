@@ -51,7 +51,7 @@
             {
                 binding.Named(name);
             }
-        }        
+        }
 
         public T Resolve<T>(string name = null)
         {
