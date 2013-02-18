@@ -12,13 +12,13 @@
 
         ReactiveAsyncCommand LoadSubject { get; }
 
+        ReactiveAsyncCommand DeleteSubject { get; }
+
         ReactiveAsyncCommand StartTesting { get; }
 
         IReactiveCommand StopTesting { get; }
 
         Assembly TesterAssembly { get; set; }
-
-        Assembly TestedAssembly { get; set; }
 
         PerfLab Lab { get; set; }
 

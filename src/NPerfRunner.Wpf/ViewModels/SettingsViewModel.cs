@@ -18,6 +18,8 @@
 
         public ReactiveAsyncCommand LoadSubject { get; protected set; }
 
+        public ReactiveAsyncCommand DeleteSubject { get; protected set; }
+
         public ReactiveAsyncCommand StartTesting { get; protected set; }
 
         public IReactiveCommand StopTesting { get; protected set; }
@@ -38,22 +40,6 @@
         }
         #endregion // TesterAssembly
 
-        #region TestedAssembly
-        private Assembly testedAssembly;
-        public Assembly TestedAssembly
-        {
-            get
-            {
-                return this.testedAssembly;
-            }
-
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.TestedAssembly, ref this.testedAssembly, value);
-            }
-        }
-        #endregion // TestedAssembly
-
         #region Lab
         private PerfLab lab;
         public PerfLab Lab
@@ -68,6 +54,23 @@
             }
         }
         #endregion // Lab
+
+        public IReactiveCollection<Assembly> TestedAssemblies { get; private set; }
+
+        #region SelectedTestedAssembly
+        private Assembly selectedTestedAssembly;
+        public Assembly SelectedTestedAssembly
+        { 
+            get
+            {
+                return this.selectedTestedAssembly;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.SelectedTestedAssembly, ref this.selectedTestedAssembly, value);
+            }
+        }
+        #endregion // SelectedTestedAssembly
 
         public SystemInfo SysInfo
         {
@@ -88,6 +91,7 @@
             var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
 
             this.Testers = new ReactiveCollection<ITesterViewModel>();
+            this.TestedAssemblies = new ReactiveCollection<Assembly>();
 
             this.LoadTool = new ReactiveAsyncCommand();
             this.LoadTool.RegisterAsyncAction(this.OnLoadTool, RxApp.DeferredScheduler);
@@ -95,44 +99,35 @@
 
             this.LoadSubject = new ReactiveAsyncCommand();
             this.LoadSubject.RegisterAsyncAction(this.OnLoadSubject, RxApp.DeferredScheduler);
-            errorHandler.HandleErrors(this.LoadSubject);            
+            errorHandler.HandleErrors(this.LoadSubject);
+
+            this.DeleteSubject = new ReactiveAsyncCommand(this.WhenAny(x => x.SelectedTestedAssembly, x => x.Value != null));
+            this.DeleteSubject.RegisterAsyncAction(this.OnDeleteSubject, RxApp.DeferredScheduler);
+            errorHandler.HandleErrors(this.DeleteSubject);
 
             var whenAssembliesLoaded = this.WhenAny(
-                    x => x.TestedAssembly, 
+                    x => x.TestedAssemblies, 
                     x => x.TesterAssembly, 
-                    (tested, tester) => tested.Value != null && tester.Value != null);
-
-            whenAssembliesLoaded.Where(x => x).Subscribe(_ => 
-                {
-                    try
-                    {
-                        this.Lab = new PerfLab(this.TesterAssembly, this.TestedAssembly);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new NotImplementedException();
-                    }
-                });
-
+                    (tested, tester) => tested.Value.Count() != 0 && tester.Value != null);
+ 
             var whenLabLoaded = this.WhenAny(x => x.Lab, x => x.Value != null);
 
             this.StartTesting = new ReactiveAsyncCommand(whenLabLoaded);
             this.StartTesting.RegisterAsyncAction(this.OnStartTesting, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.StartTesting);
 
-            whenLabLoaded.Where(x => x).Subscribe(_ =>
+            whenLabLoaded.Subscribe(labsLoaded =>
                 {
                     try
                     {
                         var testers = ((ReactiveCollection<ITesterViewModel>)this.Testers);
                         testers.Clear();
-                        testers.AddRange(
-                            this.Lab.TestSuites.Select(x => x.TesterType)
-                            .Distinct().Select(x => new TesterViewModel(this.Lab, x) as ITesterViewModel));
-                       
-                        foreach (var testerType in this.Lab.TestSuites.Select(x => x.TesterType).Distinct())
+
+                        if (labsLoaded)
                         {
-                            testers.Add(new TesterViewModel(this.Lab, testerType));
+                            testers.AddRange(
+                                this.Lab.TestSuites.Select(x => x.TesterType)
+                                .Distinct().Select(x => new TesterViewModel(this.Lab, x) as ITesterViewModel));
                         }
                     }
                     catch (Exception ex)
@@ -144,12 +139,43 @@
         
         private void OnLoadTool(object param)
         {
-            this.TesterAssembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load tester assembly");
+            var selectedAssembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load tester assembly");
+            if(selectedAssembly == null)
+            {
+                return;
+            }
+
+            this.TesterAssembly = selectedAssembly;
+            this.ReloadLab();
+        }
+
+        private void OnDeleteSubject(object param)
+        { 
+            var subjects = (ReactiveCollection<Assembly>)this.TestedAssemblies;
+            subjects.Remove(this.SelectedTestedAssembly);
+            this.ReloadLab();
+        }
+
+        private void ReloadLab()
+        {
+            this.Lab = null;
+            if(this.TestedAssemblies.Count() > 0 && this.TesterAssembly != null)
+            {
+                this.Lab = new PerfLab(this.TesterAssembly, this.TestedAssemblies.ToArray());
+            }            
         }
 
         private void OnLoadSubject(object param)
         {
-            this.TestedAssembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load tested assembly");
+            var testedAssembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load tested assembly");
+            if(testedAssembly == null)
+            {
+                return;
+            }
+
+            var testedAssemblies = (ReactiveCollection<Assembly>)this.TestedAssemblies;
+            testedAssemblies.Add(testedAssembly);
+            this.ReloadLab();
         }
 
         private void OnStartTesting(object param)

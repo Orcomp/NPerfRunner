@@ -13,7 +13,10 @@ namespace NPerfRunner.Wpf.ViewModels
         public TesterViewModel(PerfLab lab, Type testerType)
             : base(null)
         {
-            this.Name = testerType.FullName;
+         //   this.Name = testerType.FullName;            
+            var descr = lab.TestSuites.Where(x => x.TesterType.Equals(testerType)).First().TestSuiteDescription;
+            this.Name = string.IsNullOrEmpty(descr) ? testerType.FullName : descr;
+
             var children = (ReactiveCollection<ITreeViewItemViewModel>)this.Children;
             children.AddRange(lab.TestSuites
                 .Where(x => x.TesterType.Equals(testerType))
