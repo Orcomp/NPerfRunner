@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NPerfRunner.Wpf.ViewModels
+namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
 {
-    public class TestedTypeViewModel : TreeViewItemViewModel, ITestedTypeViewModel
+    public class TestedTypeViewModel : TreeViewItemViewModel//, ITestedTypeViewModel
     {
         public TestedTypeViewModel(TestViewModel parent, PerfLab lab, TestInfo testInfo)
             : base(parent)

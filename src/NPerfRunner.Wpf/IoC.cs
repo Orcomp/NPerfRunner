@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Ninject;
+    using Ninject.Syntax;
 
     internal class IoC
     {

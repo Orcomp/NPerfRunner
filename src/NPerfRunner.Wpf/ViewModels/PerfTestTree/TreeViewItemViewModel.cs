@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NPerfRunner.Wpf.ViewModels
+namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
 {
-    public abstract class TreeViewItemViewModel : ReactiveObject, ITreeViewItemViewModel
+    public abstract class TreeViewItemViewModel : ReactiveObject//, ITreeViewItemViewModel
     {
         private readonly TreeViewItemViewModel parent;
 
-        public IReactiveCollection<ITreeViewItemViewModel> Children
+        public ReactiveCollection<TreeViewItemViewModel> Children
         {
             get;
             private set;
@@ -37,7 +37,7 @@ namespace NPerfRunner.Wpf.ViewModels
         protected TreeViewItemViewModel(TreeViewItemViewModel parent)
         {            
             this.parent = parent;
-            this.Children = new ReactiveCollection<ITreeViewItemViewModel>();
+            this.Children = new ReactiveCollection<TreeViewItemViewModel>();
             this.IsChecked = false;
         }
 

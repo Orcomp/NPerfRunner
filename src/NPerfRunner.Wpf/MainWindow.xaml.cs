@@ -10,31 +10,27 @@
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IViewFor<MainWindowViewModel>
+    public partial class MainWindow : Window, IViewFor<IMainWindowViewModel>
     {
         public MainWindow()
         {
             this.InitializeComponent();
-
-            InfrastructureInstaller.Install();
-            this.SettingsHost.ViewModel = RxApp.GetService<ISettingsViewModel>();
-
-            UserError.RegisterHandler((Func<UserError, IObservable<RecoveryOptionResult>>)IoC.Instance.Resolve<ErrorHandler>().HandleError);  
+            this.DataContext = RxApp.GetService<IMainWindowViewModel>();
         }
-        
-        public MainWindowViewModel ViewModel
+
+        public IMainWindowViewModel ViewModel
         {
-            get { return (MainWindowViewModel)this.GetValue(ViewModelProperty); }
+            get { return (IMainWindowViewModel)this.GetValue(ViewModelProperty); }
             set { this.SetValue(ViewModelProperty, value); }
         }
 
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
-            "ViewModel", typeof(MainWindowViewModel), typeof(MainWindow), new PropertyMetadata(null));
+            "ViewModel", typeof(IMainWindowViewModel), typeof(MainWindow), new PropertyMetadata(null));
 
         object IViewFor.ViewModel
         {
             get { return this.ViewModel; }
-            set { this.ViewModel = (MainWindowViewModel)value; }
+            set { this.ViewModel = (IMainWindowViewModel)value; }
         }
     }
 }

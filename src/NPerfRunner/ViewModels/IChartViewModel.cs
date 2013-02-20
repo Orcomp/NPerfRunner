@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NPerfRunner.ViewModels
 {
-    public interface ITestedTypeViewModel : ITreeViewItemViewModel
+    public interface IChartViewModel : IPaneViewModel
     {
     }
 }

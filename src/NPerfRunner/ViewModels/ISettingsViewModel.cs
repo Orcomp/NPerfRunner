@@ -6,7 +6,7 @@
     using NPerf.Lab;
     using ReactiveUI;
 
-    public interface ISettingsViewModel : IReactiveNotifyPropertyChanged
+    public interface ISettingsViewModel : IToolViewModel
     {
         ReactiveAsyncCommand LoadTool { get; }
 
@@ -22,6 +22,6 @@
 
         PerfLab Lab { get; set; }
 
-        IReactiveCollection<ITesterViewModel> Testers { get; }
+        IReactiveCollection Testers { get; }
     }
 }

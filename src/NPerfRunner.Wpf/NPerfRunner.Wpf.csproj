@@ -41,6 +41,21 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AvalonDock">
+      <HintPath>..\..\packages\AvalonDock.2.0.1746\lib\net40\AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="AvalonDock.Themes.Aero">
+      <HintPath>..\..\packages\AvalonDock.2.0.1746\lib\net40\AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="AvalonDock.Themes.Expression">
+      <HintPath>..\..\packages\AvalonDock.2.0.1746\lib\net40\AvalonDock.Themes.Expression.dll</HintPath>
+    </Reference>
+    <Reference Include="AvalonDock.Themes.Metro">
+      <HintPath>..\..\packages\AvalonDock.2.0.1746\lib\net40\AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="AvalonDock.Themes.VS2010">
+      <HintPath>..\..\packages\AvalonDock.2.0.1746\lib\net40\AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
     <Reference Include="Fasterflect">
       <HintPath>..\..\packages\fasterflect.2.1.2\lib\net40\Fasterflect.dll</HintPath>
     </Reference>
@@ -144,12 +159,20 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="InfrastructureInstaller.cs" />
     <Compile Include="IoC.cs" />
+    <Compile Include="LayoutInitializer.cs" />
+    <Compile Include="ViewModels\ChartViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\TestedTypeViewModel.cs" />
-    <Compile Include="ViewModels\TestViewModel.cs" />
-    <Compile Include="ViewModels\TesterViewModel.cs" />
+    <Compile Include="PanesStyleSelector.cs" />
+    <Compile Include="ViewModels\PaneViewModel.cs" />
+    <Compile Include="ViewModels\PerfTestTree\TestedTypeViewModel.cs" />
+    <Compile Include="ViewModels\PerfTestTree\TestViewModel.cs" />
+    <Compile Include="ViewModels\PerfTestTree\TesterViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="ViewModels\TreeViewItemViewModel.cs" />
+    <Compile Include="ViewModels\PerfTestTree\TreeViewItemViewModel.cs" />
+    <Compile Include="ViewModels\ToolViewModel.cs" />
+    <Compile Include="Views\ChartView.xaml.cs">
+      <DependentUpon>ChartView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
@@ -165,6 +188,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ChartView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -204,6 +231,7 @@
       <Name>NPerfRunner</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <Import Project="..\libs\Microsoft.Bcl.Build.1.0.0-rc\tools\Microsoft.Bcl.Build.targets" />

@@ -11,8 +11,10 @@
     using ReactiveUI;
     using ReactiveUI.Routing;
     using ReactiveUI.Xaml;
+    using NPerfRunner.Wpf.ViewModels.PerfTestTree;
+using System.Windows;
 
-    public class SettingsViewModel : ReactiveObject, ISettingsViewModel
+    public class SettingsViewModel : ToolViewModel, ISettingsViewModel
     {
         public ReactiveAsyncCommand LoadTool { get; protected set; }
 
@@ -72,6 +74,14 @@
         }
         #endregion // SelectedTestedAssembly
 
+        public FrameworkElement View
+        {
+            get
+            {
+                return (FrameworkElement)IoC.Instance.Resolve<IViewFor<ISettingsViewModel>>();
+            }
+        }
+
         public SystemInfo SysInfo
         {
             get
@@ -80,17 +90,22 @@
             }
         }
 
-        public IReactiveCollection<ITesterViewModel> Testers
+        public IReactiveCollection Testers
         {
             get;
             private set;
         }
 
+        public const string ToolContentId = "SettingsTool";
+
         public SettingsViewModel()
+            : base("Settings")
         {
+            this.ContentId = ToolContentId;
+
             var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
 
-            this.Testers = new ReactiveCollection<ITesterViewModel>();
+            this.Testers = new ReactiveCollection<TesterViewModel>();
             this.TestedAssemblies = new ReactiveCollection<Assembly>();
 
             this.LoadTool = new ReactiveAsyncCommand();
@@ -120,14 +135,14 @@
                 {
                     try
                     {
-                        var testers = ((ReactiveCollection<ITesterViewModel>)this.Testers);
+                        var testers = ((ReactiveCollection<TesterViewModel>)this.Testers);
                         testers.Clear();
 
                         if (labsLoaded)
                         {
                             testers.AddRange(
                                 this.Lab.TestSuites.Select(x => x.TesterType)
-                                .Distinct().Select(x => new TesterViewModel(this.Lab, x) as ITesterViewModel));
+                                .Distinct().Select(x => new TesterViewModel(this.Lab, x)));
                         }
                     }
                     catch (Exception ex)
@@ -159,7 +174,7 @@
         private void ReloadLab()
         {
             this.Lab = null;
-            if(this.TestedAssemblies.Count() > 0 && this.TesterAssembly != null)
+            if(this.TestedAssemblies.Any() && this.TesterAssembly != null)
             {
                 this.Lab = new PerfLab(this.TesterAssembly, this.TestedAssemblies.ToArray());
             }            

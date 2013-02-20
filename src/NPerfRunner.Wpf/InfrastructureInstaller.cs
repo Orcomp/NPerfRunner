@@ -17,11 +17,12 @@
         public static void Install()
         {
             IoC.Instance.RegisterSingleton(typeof(ErrorHandler));
-            IoC.Instance.RegisterSingleton(typeof(IScreen), typeof(MainWindowViewModel));
+            IoC.Instance.RegisterSingleton(typeof(IMainWindowViewModel), typeof(MainWindowViewModel));
             IoC.Instance.RegisterSingleton(typeof(ISettingsViewModel), typeof(SettingsViewModel));
             IoC.Instance.RegisterSingleton(typeof(IViewFor<ISettingsViewModel>), typeof(SettingsView));
             IoC.Instance.RegisterSingleton(typeof(ILoadAssemblyDialog), typeof(LoadAssemblyDialog));
-
+            IoC.Instance.RegisterSingleton(typeof(IViewFor<IMainWindowViewModel>), typeof(MainWindow));   
+            
             RxApp.DeferredScheduler = new DispatcherScheduler(Application.Current.Dispatcher);                      
 
             RxRouting.ViewModelToViewFunc = str =>
