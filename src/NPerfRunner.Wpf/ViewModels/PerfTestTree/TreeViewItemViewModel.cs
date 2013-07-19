@@ -1,13 +1,16 @@
-﻿using NPerfRunner.ViewModels;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
+﻿namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
 {
-    public abstract class TreeViewItemViewModel : ReactiveObject//, ITreeViewItemViewModel
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using NPerfRunner.ViewModels;
+    using NPerfRunner.Wpf.Messages;
+
+    using ReactiveUI;
+
+    public abstract class TreeViewItemViewModel : ReactiveObject
     {
         private readonly TreeViewItemViewModel parent;
 
@@ -30,7 +33,7 @@ namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
             get { return isChecked; }
             set 
             {
-                this.SetChechedState(this, value ?? false);
+                this.SetChangedState(this, value ?? false);
             }
         }
 
@@ -38,17 +41,18 @@ namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
         {            
             this.parent = parent;
             this.Children = new ReactiveCollection<TreeViewItemViewModel>();
-            this.IsChecked = false;
+          //  this.IsChecked = false;
         }
 
-        private void SetChechedState(TreeViewItemViewModel sender, bool value)
+        private void SetChangedState(TreeViewItemViewModel sender, bool value)
         {
-            foreach (TreeViewItemViewModel child in this.Children)
+            foreach (var child in this.Children)
             {
-                child.SetChechedState(sender, value);
+                child.SetChangedState(sender, value);
             }
 
-            this.RaiseAndSetIfChanged(x => x.IsChecked, ref this.isChecked, value);
+            // this.RaiseAndSetIfChanged(x => x.IsChecked, ref this.isChecked, value);
+            this.SetIsChanged(value);
 
             if (parent != null && object.ReferenceEquals(this, sender))
             {
@@ -64,22 +68,32 @@ namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
 
             if (totalCount != 0 && checkedCount == totalCount)
             {
-                this.RaiseAndSetIfChanged(x => x.IsChecked, ref this.isChecked, true);
+                this.SetIsChanged(true);
             }
 
             if (notCheckedCount == totalCount)
             {
-                this.RaiseAndSetIfChanged(x => x.IsChecked, ref this.isChecked, false);
+                this.SetIsChanged(false);
             }
 
             if (totalCount != 0 && checkedCount < totalCount && notCheckedCount < totalCount)
             {
-                this.RaiseAndSetIfChanged(x => x.IsChecked, ref this.isChecked, null);
+                this.SetIsChanged(null);
             }
 
             if (parent != null)
             {
                 parent.UpdateCheckedState();
+            }
+        }
+
+        protected void SetIsChanged(bool? value)
+        {
+            var shouldRaise = this.IsChecked != value;
+            this.RaiseAndSetIfChanged(x => x.IsChecked, ref this.isChecked, value);
+            if (shouldRaise)
+            {
+                MessageBus.Current.SendMessage(new TestCheckChanged(this)/*this.perfLab, this.testInfo, this.IsChecked)*/);
             }
         }
     }

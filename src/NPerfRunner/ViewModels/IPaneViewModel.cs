@@ -6,6 +6,7 @@ using ReactiveUI;
 
 namespace NPerfRunner.ViewModels
 {
+    using System.Windows;
     using System.Windows.Media;
 
     public interface IPaneViewModel : IReactiveNotifyPropertyChanged
@@ -19,5 +20,9 @@ namespace NPerfRunner.ViewModels
         bool IsSelected { get; set; }
 
         bool IsActive { get; set; }
+
+        FrameworkElement View { get; }
+
+        bool IsVisible { get; set; }
     }
 }

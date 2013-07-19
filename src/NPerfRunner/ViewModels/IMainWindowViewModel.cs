@@ -5,12 +5,19 @@ using System.Text;
 
 namespace NPerfRunner.ViewModels
 {
+    using System.Collections.ObjectModel;
     using ReactiveUI;
+    using ReactiveUI.Xaml;
 
     public interface IMainWindowViewModel : IReactiveNotifyPropertyChanged
     {
         ReactiveCollection<IToolViewModel> Tools { get; }
 
-        ReactiveCollection<IChartViewModel> Charts { get; }
+        ObservableCollection<IChartViewModel> Charts { get; }
+
+        ReactiveAsyncCommand DocClosed { get; }
+
+        string StatusText { get; set; }
+
     }
 }

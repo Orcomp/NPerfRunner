@@ -5,10 +5,9 @@ using System.Text;
 
 namespace NPerfRunner.ViewModels
 {
-    public interface IToolViewModel : IPaneViewModel
+    public enum EAxisType
     {
-        string Name { get; }
-
-        
+        Linear,
+        Logarithmic
     }
 }

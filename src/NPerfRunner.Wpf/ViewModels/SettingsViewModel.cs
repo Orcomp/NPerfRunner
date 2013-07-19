@@ -5,16 +5,20 @@
     using System.Reactive;
     using System.Reactive.Linq;
     using System.Reflection;
+    using System.Windows;
+
     using NPerf.Lab;
+
     using NPerfRunner.Dialogs;
     using NPerfRunner.ViewModels;
+    using NPerfRunner.Wpf.ViewModels.PerfTestTree;
+
     using ReactiveUI;
     using ReactiveUI.Routing;
     using ReactiveUI.Xaml;
-    using NPerfRunner.Wpf.ViewModels.PerfTestTree;
-using System.Windows;
+    using System.Threading.Tasks;
 
-    public class SettingsViewModel : ToolViewModel, ISettingsViewModel
+    public class SettingsViewModel : ToolViewModel, ISettingsViewModel, ICreatesObservableForProperty
     {
         public ReactiveAsyncCommand LoadTool { get; protected set; }
 
@@ -74,14 +78,6 @@ using System.Windows;
         }
         #endregion // SelectedTestedAssembly
 
-        public FrameworkElement View
-        {
-            get
-            {
-                return (FrameworkElement)IoC.Instance.Resolve<IViewFor<ISettingsViewModel>>();
-            }
-        }
-
         public SystemInfo SysInfo
         {
             get
@@ -96,6 +92,15 @@ using System.Windows;
             private set;
         }
 
+        private FrameworkElement view;
+        public override FrameworkElement View
+        {
+            get
+            {
+                return this.view ?? (this.view = (FrameworkElement)IoC.Instance.Resolve<IViewFor<ISettingsViewModel>>());
+            }
+        }
+
         public const string ToolContentId = "SettingsTool";
 
         public SettingsViewModel()
@@ -105,7 +110,7 @@ using System.Windows;
 
             var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
 
-            this.Testers = new ReactiveCollection<TesterViewModel>();
+            this.Testers = new ReactiveCollection<TesterNodeViewModel>();
             this.TestedAssemblies = new ReactiveCollection<Assembly>();
 
             this.LoadTool = new ReactiveAsyncCommand();
@@ -119,12 +124,12 @@ using System.Windows;
             this.DeleteSubject = new ReactiveAsyncCommand(this.WhenAny(x => x.SelectedTestedAssembly, x => x.Value != null));
             this.DeleteSubject.RegisterAsyncAction(this.OnDeleteSubject, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.DeleteSubject);
-
+            /*e
             var whenAssembliesLoaded = this.WhenAny(
                     x => x.TestedAssemblies, 
                     x => x.TesterAssembly, 
                     (tested, tester) => tested.Value.Count() != 0 && tester.Value != null);
- 
+ */
             var whenLabLoaded = this.WhenAny(x => x.Lab, x => x.Value != null);
 
             this.StartTesting = new ReactiveAsyncCommand(whenLabLoaded);
@@ -135,14 +140,14 @@ using System.Windows;
                 {
                     try
                     {
-                        var testers = ((ReactiveCollection<TesterViewModel>)this.Testers);
+                        var testers = (ReactiveCollection<TesterNodeViewModel>)this.Testers;
                         testers.Clear();
 
                         if (labsLoaded)
                         {
                             testers.AddRange(
                                 this.Lab.TestSuites.Select(x => x.TesterType)
-                                .Distinct().Select(x => new TesterViewModel(this.Lab, x)));
+                                .Distinct().Select(x => new TesterNodeViewModel(this.Lab, x)));
                         }
                     }
                     catch (Exception ex)
@@ -155,7 +160,7 @@ using System.Windows;
         private void OnLoadTool(object param)
         {
             var selectedAssembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load tester assembly");
-            if(selectedAssembly == null)
+            if (selectedAssembly == null)
             {
                 return;
             }
@@ -183,7 +188,7 @@ using System.Windows;
         private void OnLoadSubject(object param)
         {
             var testedAssembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load tested assembly");
-            if(testedAssembly == null)
+            if (testedAssembly == null)
             {
                 return;
             }
@@ -195,7 +200,18 @@ using System.Windows;
 
         private void OnStartTesting(object param)
         {
-            this.Lab.Run();
-        }        
+            Task.Factory.StartNew(
+                () => this.Lab.Run().Subscribe(res => MessageBus.Current.SendMessage(res), ex => { }, () => { }));
+        }
+
+        public int GetAffinityForObject(Type type, bool beforeChanged = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IObservable<IObservedChange<object, object>> GetNotificationForProperty(object sender, string propertyName, bool beforeChanged = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

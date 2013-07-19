@@ -3,8 +3,50 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:oxy ="http://oxyplot.codeplex.com"
+             xmlns:oxy ="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <oxy:Plot Model="{Binding PlotModel}" />
+    <DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Y-Axis" FontWeight="Bold" TextAlignment="Center" Grid.Column="0" Grid.Row="0"/>
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
+                <RadioButton >Linear</RadioButton>
+                <RadioButton >Logarithmic</RadioButton>
+            </StackPanel>
+            <TextBlock Text="Y-Axis" FontWeight="Bold" TextAlignment="Center" Grid.Column="1" Grid.Row="0" />
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Starts with"/>
+                    <TextBox></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Ends with"/>
+                    <TextBox></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Step"/>
+                    <TextBox></TextBox>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <TabControl>
+            <TabItem Header="Speed metrics">
+                <oxy:Plot Model="{Binding SpeedPlotModel}" />
+
+            </TabItem>
+            <TabItem Header="Memory metrics">
+                <oxy:Plot Model="{Binding MemoryPlotModel}" />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+    
+    
 </UserControl>

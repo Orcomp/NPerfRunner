@@ -8,9 +8,9 @@ using System.Text;
 
 namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
 {
-    public class TesterViewModel : TreeViewItemViewModel//, ITesterViewModel
+    public class TesterNodeViewModel : TreeViewItemViewModel//, ITesterViewModel
     {
-        public TesterViewModel(PerfLab lab, Type testerType)
+        public TesterNodeViewModel(PerfLab lab, Type testerType)
             : base(null)
         {          
             var descr = lab.TestSuites.First(x => x.TesterType == testerType).TestSuiteDescription;
@@ -19,9 +19,9 @@ namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
             this.Children.AddRange(lab.TestSuites
                 .Where(x => x.TesterType == testerType)
                 .SelectMany(x => x.Tests)
-                .Select(x => x.TestMethodName).Distinct()
-                .OrderBy(x => x)
-                .Select(x => new TestViewModel(this, lab, testerType, x)));
+                ./*Select(x => x.TestMethodName).*/Distinct()
+                .GroupBy(x => x.TestMethodName)
+                .Select(x => new TestNodeViewModel(this, lab, testerType, x.ToArray())));
         }     
     }
 }

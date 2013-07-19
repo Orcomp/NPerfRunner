@@ -19,8 +19,6 @@
             }
         }
 
-        private readonly List<Type> registered = new List<Type>();
-
         private IoC()
         {
             this.container = new StandardKernel();
@@ -28,7 +26,6 @@
 
         public void RegisterSingleton(Type service, Type type, string name = null)
         {
-            this.registered.Add(service);
             var binding = this.container.Bind(service).To(type).InSingletonScope();
             if (!string.IsNullOrEmpty(name))
             {

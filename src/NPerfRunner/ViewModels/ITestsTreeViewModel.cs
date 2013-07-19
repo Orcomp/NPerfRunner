@@ -5,10 +5,10 @@ using System.Text;
 
 namespace NPerfRunner.ViewModels
 {
-    public interface IToolViewModel : IPaneViewModel
-    {
-        string Name { get; }
+    using ReactiveUI;
 
-        
+    public interface ITestsTreeViewModel : IToolViewModel
+    {
+        IReactiveCollection Testers { get; }
     }
 }

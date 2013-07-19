@@ -5,10 +5,7 @@ using System.Text;
 
 namespace NPerfRunner.ViewModels
 {
-    public interface IToolViewModel : IPaneViewModel
+    public interface IConsoleViewModel : IToolViewModel
     {
-        string Name { get; }
-
-        
     }
 }

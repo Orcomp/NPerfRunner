@@ -14,14 +14,39 @@ using System.Windows.Shapes;
 
 namespace NPerfRunner.Wpf.Views
 {
+    using NPerfRunner.ViewModels;
+
+    using ReactiveUI;
+
     /// <summary>
     /// Логика взаимодействия для ChartView.xaml
     /// </summary>
-    public partial class ChartView : UserControl
+    public partial class ChartView : UserControl, IViewFor<IChartViewModel>
     {
         public ChartView()
         {
-            InitializeComponent();
+            InitializeComponent();                   
+        }
+
+        public void BindViewModel(IChartViewModel viewModel)
+        {
+            DataContext = viewModel;
+            
+        }
+
+        public IChartViewModel ViewModel
+        {
+            get { return (IChartViewModel)this.GetValue(ViewModelProperty); }
+            set { this.SetValue(ViewModelProperty, value); }
+        }
+
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register("ViewModel", typeof(IChartViewModel), typeof(ChartView), new PropertyMetadata(null));
+
+        object IViewFor.ViewModel
+        {
+            get { return this.ViewModel; }
+            set { this.ViewModel = (IChartViewModel)value; }
         }
     }
 }

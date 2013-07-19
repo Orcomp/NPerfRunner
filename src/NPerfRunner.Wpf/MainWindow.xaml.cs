@@ -6,6 +6,7 @@
     using NPerfRunner.Wpf.ViewModels;
     using ReactiveUI;
     using ReactiveUI.Xaml;
+    using Xceed.Wpf.AvalonDock;
 
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -15,7 +16,11 @@
         public MainWindow()
         {
             this.InitializeComponent();
-            this.DataContext = RxApp.GetService<IMainWindowViewModel>();
+            ViewModel = RxApp.GetService<IMainWindowViewModel>();
+            this.DataContext = ViewModel;
+            this.BindCommand(ViewModel, vm => vm.DocClosed, v => v.dockManager, "DocumentClosed");
+
+            //this.BindCommand(ViewModel,)
         }
 
         public IMainWindowViewModel ViewModel
@@ -32,5 +37,7 @@
             get { return this.ViewModel; }
             set { this.ViewModel = (IMainWindowViewModel)value; }
         }
+
+       
     }
 }

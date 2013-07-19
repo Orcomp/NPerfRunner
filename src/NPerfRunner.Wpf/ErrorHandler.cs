@@ -15,13 +15,13 @@
                         switch (result)
                         {
                             case RecoveryOptionResult.RetryOperation:
-                            command.Execute(null);
-                            break;
-                        case RecoveryOptionResult.FailOperation:
-                            Application.Current.Shutdown();
-                            break;
-                    }
-                });
+                                command.Execute(null);
+                                break;
+                            case RecoveryOptionResult.FailOperation:
+                                Application.Current.Shutdown();
+                                break;
+                        }
+                    });
         }
 
         public IObservable<RecoveryOptionResult> HandleError(UserError error)

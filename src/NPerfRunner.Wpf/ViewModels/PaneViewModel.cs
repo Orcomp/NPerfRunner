@@ -1,13 +1,11 @@
 ﻿namespace NPerfRunner.Wpf.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+    using System.Windows;
     using System.Windows.Media;
 
-    using ReactiveUI;
     using NPerfRunner.ViewModels;
+
+    using ReactiveUI;
 
     public abstract class PaneViewModel : ReactiveObject, IPaneViewModel
     {
@@ -44,7 +42,7 @@
         {
             get
             {
-                return this.contentId;
+                return contentId;
             }
 
             set
@@ -92,5 +90,28 @@
         }
 
         #endregion // IsActive
+
+        #region IsVisible
+
+        private bool isVisible;
+
+        public bool IsVisible
+        {
+            get
+            {
+                return this.isVisible;
+            }
+
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.IsVisible, ref this.isVisible, value);
+            }
+        }
+
+        #endregion // IsVisible
+        public abstract FrameworkElement View
+        {
+             get;
+        }
     }
 }
