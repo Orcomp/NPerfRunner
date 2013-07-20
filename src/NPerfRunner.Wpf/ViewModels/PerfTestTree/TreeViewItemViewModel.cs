@@ -41,50 +41,64 @@
         {            
             this.parent = parent;
             this.Children = new ReactiveCollection<TreeViewItemViewModel>();
-          //  this.IsChecked = false;
         }
 
         private void SetChangedState(TreeViewItemViewModel sender, bool value)
-        {
+        {           
+            if (parent != null && object.ReferenceEquals(this, sender))
+            {
+                parent.UpdateCheckedState(value);
+            }
+
+            this.SetIsChanged(value);
+
             foreach (var child in this.Children)
             {
                 child.SetChangedState(sender, value);
             }
-
-            // this.RaiseAndSetIfChanged(x => x.IsChecked, ref this.isChecked, value);
-            this.SetIsChanged(value);
-
-            if (parent != null && object.ReferenceEquals(this, sender))
-            {
-                parent.UpdateCheckedState();
-            }
         }
 
-        private void UpdateCheckedState()
+        private void UpdateCheckedState(bool? childWillChecked = null)
         {
-            int checkedCount = this.Children.Count(x => x.IsChecked != null && x.IsChecked.Value);
+            int checkedCount = this.Children.Count(x => x.IsChecked != null && x.IsChecked.Value);           
             int notCheckedCount = this.Children.Count(x => x.IsChecked != null && !x.IsChecked.Value);
             int totalCount = this.Children.Count();
 
+            if (childWillChecked != null && childWillChecked.Value)
+            {
+                checkedCount++;
+                notCheckedCount--;
+            }
+            if (childWillChecked != null && !childWillChecked.Value && notCheckedCount != totalCount)
+            {
+                checkedCount--;
+                notCheckedCount++;
+            }
+
+            bool? checkedValue = null;
             if (totalCount != 0 && checkedCount == totalCount)
             {
-                this.SetIsChanged(true);
+                checkedValue = true;
             }
 
             if (notCheckedCount == totalCount)
             {
-                this.SetIsChanged(false);
+                checkedValue = false;
             }
 
             if (totalCount != 0 && checkedCount < totalCount && notCheckedCount < totalCount)
             {
-                this.SetIsChanged(null);
+                checkedValue = null;
             }
+
+            this.SetIsChanged(checkedValue);
 
             if (parent != null)
             {
                 parent.UpdateCheckedState();
             }
+
+            
         }
 
         protected void SetIsChanged(bool? value)
@@ -93,7 +107,7 @@
             this.RaiseAndSetIfChanged(x => x.IsChecked, ref this.isChecked, value);
             if (shouldRaise)
             {
-                MessageBus.Current.SendMessage(new TestCheckChanged(this)/*this.perfLab, this.testInfo, this.IsChecked)*/);
+                MessageBus.Current.SendMessage(new TestCheckChanged(this));
             }
         }
     }

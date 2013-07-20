@@ -124,12 +124,7 @@
             this.DeleteSubject = new ReactiveAsyncCommand(this.WhenAny(x => x.SelectedTestedAssembly, x => x.Value != null));
             this.DeleteSubject.RegisterAsyncAction(this.OnDeleteSubject, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.DeleteSubject);
-            /*e
-            var whenAssembliesLoaded = this.WhenAny(
-                    x => x.TestedAssemblies, 
-                    x => x.TesterAssembly, 
-                    (tested, tester) => tested.Value.Count() != 0 && tester.Value != null);
- */
+
             var whenLabLoaded = this.WhenAny(x => x.Lab, x => x.Value != null);
 
             this.StartTesting = new ReactiveAsyncCommand(whenLabLoaded);

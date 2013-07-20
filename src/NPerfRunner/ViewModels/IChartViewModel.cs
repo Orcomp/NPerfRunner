@@ -3,6 +3,7 @@
     using System;
     using NPerf.Lab.Info;
     using OxyPlot;
+    using ReactiveUI.Xaml;
 
     public interface IChartViewModel : IPaneViewModel
     {
@@ -18,12 +19,18 @@
 
         PlotModel MemoryPlotModel { get; }
 
-        EAxisType AxisType { get; }
+        bool IsLinear { get; set; }
 
         double StartValue { get; }
 
         double EndValue { get; }
 
         double StepValue { get; }
+
+        ReactiveAsyncCommand Start { get; }
+
+        ReactiveAsyncCommand Stop { get; }
+
+        bool IsStarted { get; }
     }
 }

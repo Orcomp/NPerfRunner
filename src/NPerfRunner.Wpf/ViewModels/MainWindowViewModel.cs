@@ -29,10 +29,6 @@
 
             var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
 
-    /*        this.LoadTool = new ReactiveAsyncCommand();
-            this.LoadTool.RegisterAsyncAction(OnLoadTool, RxApp.DeferredScheduler);
-            errorHandler.HandleErrors(this.LoadTool);*/
-
             this.LoadAssebmly = new ReactiveAsyncCommand();
             this.LoadAssebmly.RegisterAsyncAction(OnLoadAssembly, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.LoadAssebmly);
@@ -41,8 +37,6 @@
             DocClosed.RegisterAsyncAction(OnDocumentClosed, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.DocClosed);
         }
-/*
-        public ReactiveAsyncCommand LoadTool { get; protected set; }*/
 
         public ReactiveAsyncCommand LoadAssebmly { get; protected set; }
 
@@ -68,22 +62,6 @@
             testedAssemblies.Add(testedAssembly);
             ReloadLab();
         }
-
- /*       private void OnLoadTool(object param)
-        {
-            var selectedAssembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load tester assembly");
-            if (selectedAssembly == null)
-            {
-                return;
-            }
-            var commonData = IoC.Instance.Resolve<CommonData>();
-
-            commonData.TesterAssembly = selectedAssembly;
-
-            ReloadLab();
-
-            StatusText = string.Format("Loaded tester: {0}", selectedAssembly);
-        }*/
 
         private static void ReloadLab()
         {
@@ -139,28 +117,6 @@
             {
                 chart.Remove(testedNode.TestInfo);
             }
-
-           /* var existed =
-                this.Charts.FirstOrDefault(
-                    x => x.TestName == testCheckChanged.TestInfo.TestMethodName && x.TesterType == testCheckChanged.TestInfo.Suite.TesterType);
-
-            var isChecked = testCheckChanged.Checked == null || testCheckChanged.Checked.Value;
-
-            if (isChecked && existed == null)
-            {
-                this.Charts.Add(new ChartViewModel(testCheckChanged.Lab, testCheckChanged.TestInfo));
-            }
-
-            if (isChecked && existed != null)
-            {
-                existed.Add(testCheckChanged.TestInfo);
-            }
-
-            if (!isChecked && existed != null)
-            {
-                existed.Remove(testCheckChanged.TestInfo);
-                this.Charts.Remove(existed);
-            }*/
         }
 
         public ReactiveCollection<IToolViewModel> Tools { get; private set; }
