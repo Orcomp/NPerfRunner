@@ -25,15 +25,15 @@
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
                 <DockPanel LastChildFill="False">
                     <TextBlock DockPanel.Dock="Left"  Text="Starts with"/>
-                    <TextBox DockPanel.Dock="Right" Width="100" />
+                    <TextBox DockPanel.Dock="Right" Width="100" Text="{Binding StartValue}"/>
                 </DockPanel>
                 <DockPanel LastChildFill="False">
                     <TextBlock DockPanel.Dock="Left"  Text="Ends with"/>
-                    <TextBox DockPanel.Dock="Right" Width="100" />
+                    <TextBox DockPanel.Dock="Right" Width="100" Text="{Binding EndValue}" />
                 </DockPanel>
                 <DockPanel LastChildFill="False">
                     <TextBlock DockPanel.Dock="Left"  Text="Step"/>
-                    <TextBox DockPanel.Dock="Right" Width="100" />
+                    <TextBox DockPanel.Dock="Right" Width="100" Text="{Binding StepValue}"/>
                 </DockPanel>
             </StackPanel>
 

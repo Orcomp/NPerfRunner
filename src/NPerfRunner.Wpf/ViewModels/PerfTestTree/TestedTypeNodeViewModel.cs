@@ -1,6 +1,4 @@
-﻿using NPerf.Framework.Interfaces;
-using NPerf.Lab;
-using NPerf.Lab.Info;
+﻿using NPerf.Lab;
 using NPerfRunner.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,6 +7,7 @@ using System.Text;
 
 namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
 {
+    using NPerf.Core.Info;
     using NPerfRunner.Wpf.Messages;
 
     using ReactiveUI;
@@ -27,7 +26,7 @@ namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
             this.parent = parent;
             this.perfLab = lab;
             this.TestInfo = testInfo;
-            this.Name = testInfo.Suite.TestedType.FullName;
+            this.Name = testInfo.TestedType.FullName;
         }
     }
 }

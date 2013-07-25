@@ -5,6 +5,8 @@
     using System.Reactive.Linq;
     using System.Reflection;
     using System.Windows;
+
+    using NPerf.Core.Info;
     using NPerf.Lab;
     using NPerfRunner.Dialogs;
     using NPerfRunner.ViewModels;
@@ -82,41 +84,46 @@
 
             IChartViewModel chart = null;
 
-            if (testNode != null)
+            if (testerNode != null)
             {
-                chart =
-                    this.Charts.FirstOrDefault(x => x.TestName == testNode.Name && x.TesterType == testNode.TesterType);
-            }            
-
-            if (chart != null && testNode != null && !(testNode.IsChecked ?? true))
-            {
-                this.Charts.Remove(chart);
-                chart = null;
+                chart = this.Charts.FirstOrDefault(x => x.TestSuiteInfo.Equals(testerNode.TestSuiteInfo));
             }
 
-            if (chart == null && testNode != null && (testNode.IsChecked ?? true))
+            if (chart != null && !(testerNode.IsChecked ?? true))
             {
-                this.Charts.Add(new ChartViewModel(testNode.PerfLab, testNode.TesterType, testNode.Tests.First().TestMethodName));
+                this.Charts.Remove(chart);                
             }
+
+            if (chart == null && testerNode != null && (testerNode.IsChecked ?? true))
+            {
+                this.Charts.Add(new ChartViewModel(testerNode.Lab, testerNode.TestSuiteInfo));
+            }
+
+            chart = null;
+            TestInfo test = null;
 
             if (testedNode != null)
             {
-                chart =
-                    this.Charts.FirstOrDefault(
-                        x =>
-                        x.TestName == testedNode.TestInfo.TestMethodName
-                        && x.TesterType == testedNode.TestInfo.Suite.TesterType);
+                chart = (from ch in this.Charts
+                         where Equals(ch.TestSuiteInfo, testedNode.TestInfo.Suite)
+                         select ch).FirstOrDefault();
             }
 
-            if (chart != null && testedNode != null && (testedNode.IsChecked ?? false))
+            if (chart != null)
+            {
+                test = (from t in chart.Tests where t.TestId == testedNode.TestInfo.TestId select t).FirstOrDefault();
+            }
+
+            if (chart != null && test != null && !(testedNode.IsChecked ?? true))
+            {
+                chart.Remove(testedNode.TestInfo);
+            }
+
+            if (chart != null && test == null && (testedNode.IsChecked ?? true))
             {
                 chart.Add(testedNode.TestInfo);
             }
 
-            if (chart != null && testedNode != null && !(testedNode.IsChecked ?? false))
-            {
-                chart.Remove(testedNode.TestInfo);
-            }
         }
 
         public ReactiveCollection<IToolViewModel> Tools { get; private set; }

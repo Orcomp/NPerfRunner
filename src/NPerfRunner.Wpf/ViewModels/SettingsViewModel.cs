@@ -141,7 +141,7 @@
                         if (labsLoaded)
                         {
                             testers.AddRange(
-                                this.Lab.TestSuites.Select(x => x.TesterType)
+                                this.Lab.TestSuites
                                 .Distinct().Select(x => new TesterNodeViewModel(this.Lab, x)));
                         }
                     }

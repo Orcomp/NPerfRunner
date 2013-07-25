@@ -6,8 +6,6 @@
     using System.Text;
 
     using NPerf.Lab;
-    using NPerf.Lab.Info;
-
     using NPerfRunner.Wpf.ViewModels.PerfTestTree;
 
     public class TestCheckChanged

@@ -8,20 +8,39 @@ using System.Text;
 
 namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
 {
-    public class TesterNodeViewModel : TreeViewItemViewModel//, ITesterViewModel
-    {
-        public TesterNodeViewModel(PerfLab lab, Type testerType)
-            : base(null)
-        {          
-            var descr = lab.TestSuites.First(x => x.TesterType == testerType).TestSuiteDescription;
-            this.Name = string.IsNullOrEmpty(descr) ? testerType.FullName : descr;
+    using NPerf.Core.Info;
 
-            this.Children.AddRange(lab.TestSuites
-                .Where(x => x.TesterType == testerType)
-                .SelectMany(x => x.Tests)
-                ./*Select(x => x.TestMethodName).*/Distinct()
-                .GroupBy(x => x.TestMethodName)
-                .Select(x => new TestNodeViewModel(this, lab, testerType, x.ToArray())));
-        }     
+    using NPerfRunner.Wpf.Messages;
+
+    public class TesterNodeViewModel : TreeViewItemViewModel
+    {
+        public TesterNodeViewModel(PerfLab lab, TestSuiteInfo testSuiteInfo)
+            : base(null)
+        {
+            var descr = testSuiteInfo.TestSuiteDescription;
+            this.Name = string.IsNullOrEmpty(descr) ? testSuiteInfo.TesterType.FullName : descr;
+
+            this.TestSuiteInfo = testSuiteInfo;
+
+            this.Lab = lab;
+
+            this.Children.AddRange(
+                testSuiteInfo.Tests.GroupBy(x => x.TestMethodName)
+                             .Select(x => new TestNodeViewModel(this, lab, testSuiteInfo, x.Key)));
+
+            MessageBus.Current.Listen<ChartRemoved>().Subscribe(OnChartRemoved);
+        }
+
+        private void OnChartRemoved(ChartRemoved chart)
+        {
+            if (chart.Chart.TestSuiteInfo.Equals(this.TestSuiteInfo))
+            {
+                IsChecked = false;
+            }
+        }
+
+        public TestSuiteInfo TestSuiteInfo { get; private set; }
+
+        public PerfLab Lab { get; private set; }
     }
 }

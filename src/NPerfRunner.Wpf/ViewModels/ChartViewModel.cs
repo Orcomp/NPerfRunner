@@ -6,9 +6,9 @@
     using System.Reactive.Linq;
     using System.Threading.Tasks;
     using System.Windows;
+    using NPerf.Core.Info;
     using NPerf.Core.PerfTestResults;
     using NPerf.Lab;
-    using NPerf.Lab.Info;
     using NPerfRunner.ViewModels;
     using OxyPlot;
     using OxyPlot.Series;
@@ -22,17 +22,17 @@
 
         private FrameworkElement view;
 
-        public ChartViewModel(PerfLab lab, Type testerType, string testMethodName)
+        public ChartViewModel(PerfLab lab, TestSuiteInfo suiteInfo/*, string testMethodName*/)
         {
             Lab = lab;
-            TestName = testMethodName;
-            TesterType = testerType;
 
+            TestSuiteInfo = suiteInfo;
+            /*TestMethodName = testMethodName;*/
             SpeedPlotModel =
-                new PlotModel(string.Format("\"{0}\": Time characteristics", testMethodName));
+                new PlotModel(string.Format("\"{0}\": Time characteristics", suiteInfo.TestSuiteDescription));
 
             MemoryPlotModel =
-                new PlotModel(string.Format("\"{0}\": Memory usage", testMethodName));
+                new PlotModel(string.Format("\"{0}\": Memory usage", suiteInfo.TestSuiteDescription));
 
             memorySeries = new Dictionary<TestInfo, LineSeries>();
             speedSeries = new Dictionary<TestInfo, LineSeries>();
@@ -51,9 +51,7 @@
             this.Stop = new ReactiveAsyncCommand(whenStarted);            
             Stop.RegisterAsyncAction(OnStop, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.Stop);
-
-           // this.ObservableForProperty(x => x.IsLinear).
-           
+          
 
             MessageBus.Current.Listen<PerfTestResult>()
                       .Where(x => tests.FirstOrDefault(t => t.TestId.Equals(x.TestId)) != null)
@@ -122,19 +120,24 @@
             }
         }
 
+        public IEnumerable<TestInfo> Tests 
+        {
+            get
+            {
+                return this.tests.AsEnumerable();
+            }
+        }
+
         public PlotModel SpeedPlotModel { get; private set; }
 
         public PlotModel MemoryPlotModel { get; private set; }
-
-        public double StartValue { get; private set; }
-        public double EndValue { get; private set; }
-        public double StepValue { get; private set; }
+        
         public ReactiveAsyncCommand Start { get; private set; }
         public ReactiveAsyncCommand Stop { get; private set; }
 
-        public string TestName { get; private set; }
+        /*public string TestMethodName { get; private set; }*/
 
-        public Type TesterType { get; private set; }
+        public TestSuiteInfo TestSuiteInfo { get; private set; }
 
         private IDictionary<TestInfo, LineSeries> memorySeries;
         private IDictionary<TestInfo, LineSeries> speedSeries;
@@ -155,11 +158,9 @@
 
         private static void Add(IDictionary<TestInfo, LineSeries> dict, PlotModel plotModel, TestInfo test)
         {
-            var testedTypeName = test.Suite.TestedType.ToString();
-
             if (!dict.ContainsKey(test))
             {
-                var series = new LineSeries(testedTypeName);
+                var series = new LineSeries(test.ToString());
                 dict.Add(test, series);
                 plotModel.Series.Add(series);
                 plotModel.RefreshPlot(true);
@@ -190,8 +191,7 @@
             }
         }
         #endregion // IsLinear
-
-
+        
         #region IsStarted
         private bool isStarted;
         public bool IsStarted
@@ -221,5 +221,51 @@
             }
         }
         #endregion // Lab
+        
+        #region StartValue
+        private double startValue;
+        public double StartValue
+        {
+            get
+            {
+                return this.startValue;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.StartValue, ref this.startValue, value);
+            }
+        }
+        #endregion // StartValue
+
+        #region EndValue
+        private double endValue;
+        public double EndValue
+        {
+            get
+            {
+                return this.endValue;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.EndValue, ref this.endValue, value);
+            }
+        }
+        #endregion // EndValue
+
+        #region StepValue
+        private int stepValue;
+        public int StepValue
+        {
+            get
+            {
+                return this.stepValue;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.StepValue, ref this.stepValue, value);
+            }
+        }
+        #endregion // StepValue
+
     }
 }

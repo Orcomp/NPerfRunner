@@ -31,8 +31,9 @@ namespace NPerfRunner.Wpf.ViewModels
                     if (labsLoaded)
                     {
                         testers.AddRange(
-                            commonData.Lab.TestSuites.Select(x => x.TesterType)
-                            .Distinct().Select(x => new TesterNodeViewModel(commonData.Lab, x)));
+                            commonData.Lab.TestSuites.OrderBy(x => x.TestSuiteDescription)
+                                      .Distinct()
+                                      .Select(x => new TesterNodeViewModel(commonData.Lab, x) { IsChecked = false }));
                     }
                 }
                 catch (Exception ex)

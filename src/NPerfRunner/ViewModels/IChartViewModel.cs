@@ -1,15 +1,17 @@
 ﻿namespace NPerfRunner.ViewModels
 {
     using System;
-    using NPerf.Lab.Info;
+    using System.Collections.Generic;
+
+    using NPerf.Core.Info;
     using OxyPlot;
     using ReactiveUI.Xaml;
 
     public interface IChartViewModel : IPaneViewModel
     {
-        string TestName { get; }
+        /*string TestMethodName { get; }*/
 
-        Type TesterType { get; }
+        TestSuiteInfo TestSuiteInfo { get; }
 
         void Add(TestInfo testInfo);
 
@@ -21,16 +23,19 @@
 
         bool IsLinear { get; set; }
 
-        double StartValue { get; }
+        int StartValue { get; }
 
-        double EndValue { get; }
+        int EndValue { get; }
 
-        double StepValue { get; }
+        int StepValue { get; }
 
         ReactiveAsyncCommand Start { get; }
 
         ReactiveAsyncCommand Stop { get; }
 
         bool IsStarted { get; }
+
+
+        IEnumerable<TestInfo> Tests { get; }
     }
 }
