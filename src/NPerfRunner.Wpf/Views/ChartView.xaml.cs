@@ -18,9 +18,6 @@ namespace NPerfRunner.Wpf.Views
 
     using ReactiveUI;
 
-    /// <summary>
-    /// Логика взаимодействия для ChartView.xaml
-    /// </summary>
     public partial class ChartView : UserControl, IViewFor<IChartViewModel>
     {
         public ChartView()

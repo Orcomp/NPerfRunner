@@ -31,9 +31,10 @@
 
             var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
 
-            this.LoadAssebmly = new ReactiveAsyncCommand();
-            this.LoadAssebmly.RegisterAsyncAction(OnLoadAssembly, RxApp.DeferredScheduler);
-            errorHandler.HandleErrors(this.LoadAssebmly);
+            MessageBus.Current.Listen<LoadAssembly>()
+                      .Subscribe(OnLoadAssembly);
+
+            MessageBus.Current.Listen<ClearAssembliesList>().Subscribe(OnClearAssembliesList);
 
             DocClosed = new ReactiveAsyncCommand();
             DocClosed.RegisterAsyncAction(OnDocumentClosed, RxApp.DeferredScheduler);
@@ -50,30 +51,46 @@
             MessageBus.Current.SendMessage(new ChartRemoved(chart));
         }
 
-        private static void OnLoadAssembly(object param)
+        private static void OnClearAssembliesList(ClearAssembliesList param)
         {
-            var testedAssembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load tested assembly");
-            if (testedAssembly == null)
+            var commonData = IoC.Instance.Resolve<CommonData>();
+            commonData.Lab = null;
+            ((ReactiveCollection<Assembly>)commonData.LoadedAssemblies).Clear();
+        }
+
+        private static void OnLoadAssembly(LoadAssembly param)
+        {
+            var assembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load assembly");
+            if (assembly == null)
             {
                 return;
             }
 
             var commonData = IoC.Instance.Resolve<CommonData>();
 
-            var testedAssemblies = (ReactiveCollection<Assembly>)commonData.LoadedAssemblies;
-            testedAssemblies.Add(testedAssembly);
-            ReloadLab();
+            ReloadLab(assembly);
         }
 
-        private static void ReloadLab()
+        private static void ReloadLab(params Assembly[] assemblies)
         {
             var commonData = IoC.Instance.Resolve<CommonData>();
 
-            commonData.Lab = null;
-            if (commonData.LoadedAssemblies.Any())
+            if (!assemblies.Any() && !commonData.LoadedAssemblies.Any())
             {
-                commonData.Lab = new PerfLab(commonData.LoadedAssemblies.ToArray());
+                commonData.Lab = null;
             }
+
+            if (assemblies.Any() && commonData.Lab == null)
+            {
+                commonData.Lab = new PerfLab(commonData.LoadedAssemblies.Union(assemblies).ToArray());
+            }
+
+            if (assemblies.Any() && commonData.Lab != null)
+            {
+                commonData.Lab.AddAssemblies(assemblies);
+            }
+
+            ((ReactiveCollection<Assembly>)commonData.LoadedAssemblies).AddRange(assemblies);
         }
 
         private void OnTestCheckChanged(TestCheckChanged testCheckChanged)

@@ -9,8 +9,6 @@
 
     public interface IChartViewModel : IPaneViewModel
     {
-        /*string TestMethodName { get; }*/
-
         TestSuiteInfo TestSuiteInfo { get; }
 
         void Add(TestInfo testInfo);
@@ -34,7 +32,6 @@
         ReactiveAsyncCommand Stop { get; }
 
         bool IsStarted { get; }
-
 
         IEnumerable<TestInfo> Tests { get; }
     }

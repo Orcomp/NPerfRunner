@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
 
-namespace NPerfRunner.Tests
+namespace NPerfRunner.Wpf.Messages
 {
-    [TestFixture]
-    public class Class1
+    public class LoadAssembly
     {
     }
 }

@@ -8,9 +8,6 @@
     using ReactiveUI.Xaml;
     using Xceed.Wpf.AvalonDock;
 
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window, IViewFor<IMainWindowViewModel>
     {
         public MainWindow()
@@ -19,8 +16,6 @@
             ViewModel = RxApp.GetService<IMainWindowViewModel>();
             this.DataContext = ViewModel;
             this.BindCommand(ViewModel, vm => vm.DocClosed, v => v.dockManager, "DocumentClosed");
-
-            //this.BindCommand(ViewModel,)
         }
 
         public IMainWindowViewModel ViewModel

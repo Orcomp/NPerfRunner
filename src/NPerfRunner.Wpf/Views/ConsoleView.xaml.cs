@@ -18,9 +18,6 @@ namespace NPerfRunner.Wpf.Views
 
     using ReactiveUI;
 
-    /// <summary>
-    /// Логика взаимодействия для ConsoleView.xaml
-    /// </summary>
     public partial class ConsoleView : UserControl, IViewFor<IConsoleViewModel>
     {
         public ConsoleView()

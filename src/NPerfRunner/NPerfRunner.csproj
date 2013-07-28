@@ -129,7 +129,6 @@
     <Compile Include="ViewModels\IConsoleViewModel.cs" />
     <Compile Include="ViewModels\IMainWindowViewModel.cs" />
     <Compile Include="ViewModels\IPaneViewModel.cs" />
-    <Compile Include="ViewModels\ISettingsViewModel.cs" />
     <Compile Include="ViewModels\ITestsTreeViewModel.cs" />
     <Compile Include="ViewModels\IToolViewModel.cs" />
   </ItemGroup>

@@ -159,6 +159,8 @@
     <Compile Include="IoC.cs" />
     <Compile Include="LayoutInitializer.cs" />
     <Compile Include="Messages\ChartRemoved.cs" />
+    <Compile Include="Messages\ClearAssembliesList.cs" />
+    <Compile Include="Messages\LoadAssembly.cs" />
     <Compile Include="Messages\TestCheckChanged.cs" />
     <Compile Include="PanesStyleSelector.cs" />
     <Compile Include="ViewModels\ChartViewModel.cs" />
@@ -168,7 +170,6 @@
     <Compile Include="ViewModels\PerfTestTree\TestedTypeNodeViewModel.cs" />
     <Compile Include="ViewModels\PerfTestTree\TestNodeViewModel.cs" />
     <Compile Include="ViewModels\PerfTestTree\TesterNodeViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\PerfTestTree\TreeViewItemViewModel.cs" />
     <Compile Include="ViewModels\TestsTreeViewModel.cs" />
     <Compile Include="ViewModels\ToolViewModel.cs" />
@@ -177,9 +178,6 @@
     </Compile>
     <Compile Include="Views\ConsoleView.xaml.cs">
       <DependentUpon>ConsoleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsView.xaml.cs">
-      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestsTreeView.xaml.cs">
       <DependentUpon>TestsTreeView.xaml</DependentUpon>
@@ -201,10 +199,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConsoleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

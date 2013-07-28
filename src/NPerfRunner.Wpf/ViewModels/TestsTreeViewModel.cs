@@ -6,9 +6,12 @@ using NPerfRunner.ViewModels;
 
 namespace NPerfRunner.Wpf.ViewModels
 {
+    using System.Reflection;
     using System.Windows;
+    using NPerfRunner.Wpf.Messages;
     using NPerfRunner.Wpf.ViewModels.PerfTestTree;
     using ReactiveUI;
+    using ReactiveUI.Xaml;
 
     public class TestsTreeViewModel : ToolViewModel, ITestsTreeViewModel, ICreatesObservableForProperty
     {
@@ -19,16 +22,24 @@ namespace NPerfRunner.Wpf.ViewModels
 
             var commonData = IoC.Instance.Resolve<CommonData>();
 
-            var whenLabLoaded = commonData.WhenAny(x => x.Lab, x => x.Value != null);
+            var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
 
-            whenLabLoaded.Subscribe(labsLoaded =>
+            this.LoadAssembly = new ReactiveAsyncCommand();
+            this.LoadAssembly.RegisterAsyncAction(OnLoadAssembly, RxApp.DeferredScheduler);
+            errorHandler.HandleErrors(this.LoadAssembly);
+
+            this.ClearAssembliesList = new ReactiveAsyncCommand();
+            this.ClearAssembliesList.RegisterAsyncAction(OnClearList, RxApp.DeferredScheduler);
+            errorHandler.HandleErrors(this.ClearAssembliesList);
+
+            commonData.LoadedAssemblies.CollectionCountChanged.Subscribe(count =>
             {
                 try
                 {
                     var testers = (ReactiveCollection<TesterNodeViewModel>)this.Testers;
                     testers.Clear();
 
-                    if (labsLoaded)
+                    if (commonData.Lab != null)
                     {
                         testers.AddRange(
                             commonData.Lab.TestSuites.OrderBy(x => x.TestSuiteDescription)
@@ -42,6 +53,31 @@ namespace NPerfRunner.Wpf.ViewModels
                 }
             });
         }
+
+
+        private static void OnLoadAssembly(object param)
+        {
+            MessageBus.Current.SendMessage(new LoadAssembly());
+        }
+
+        private static void OnClearList(object param)
+        {
+            MessageBus.Current.SendMessage(new ClearAssembliesList());
+        }
+
+        public IReactiveCollection LoadedAssemblies
+        {
+            get
+            {
+                return IoC.Instance.Resolve<CommonData>()
+                          .LoadedAssemblies;
+            }
+
+        }
+
+        public ReactiveAsyncCommand LoadAssembly { get; private set; }
+
+        public ReactiveAsyncCommand ClearAssembliesList { get; private set; }
 
         public IReactiveCollection Testers
         {

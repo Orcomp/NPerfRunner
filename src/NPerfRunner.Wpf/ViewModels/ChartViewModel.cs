@@ -22,15 +22,22 @@
 
         private FrameworkElement view;
 
-        public ChartViewModel(PerfLab lab, TestSuiteInfo suiteInfo/*, string testMethodName*/)
+        public ChartViewModel(PerfLab lab, TestSuiteInfo suiteInfo)
         {
             Lab = lab;
 
             TestSuiteInfo = suiteInfo;
-            /*TestMethodName = testMethodName;*/
+
+            this.StartValue = 1;
+
+            this.EndValue = suiteInfo.DefaultTestCount;
+
+            this.StepValue = 1;
+
             SpeedPlotModel =
                 new PlotModel(string.Format("\"{0}\": Time characteristics", suiteInfo.TestSuiteDescription));
 
+           
             MemoryPlotModel =
                 new PlotModel(string.Format("\"{0}\": Memory usage", suiteInfo.TestSuiteDescription));
 
@@ -72,23 +79,40 @@
                               });
         }
 
+        private IDisposable subscription = null;
+
         private void OnStart(object param)
         {
+            PrepareStart();
+
+            Task.Factory.StartNew(
+                () =>
+                    {
+                        subscription = this.Lab.Run(tests.Select(x => x.TestId).ToArray(), StartValue, StepValue, EndValue, true)
+                            .Subscribe(
+                                res => MessageBus.Current.SendMessage(res),
+                                ex => { IsStarted = false; },
+                                () => { IsStarted = false; });
+                    });
+        }
+
+        private void PrepareStart()
+        {
             IsStarted = true;
+
             foreach (var series in memorySeries.Select(m => m.Value).Union(speedSeries.Select(s => s.Value)))
             {
                 series.Points.Clear();
             }
-            
+
             SpeedPlotModel.RefreshPlot(true);
             MemoryPlotModel.RefreshPlot(true);
-
-            Task.Factory.StartNew(
-                () => this.Lab.Run(tests.Select(x => x.TestId).ToArray(), true).Subscribe(res => MessageBus.Current.SendMessage(res), ex => { IsStarted = false; }, () => { IsStarted = false; }));
         }
 
         private void OnStop(object param)
         {
+            subscription.Dispose();
+            subscription = null;
             IsStarted = false;
         }
 
@@ -133,9 +157,8 @@
         public PlotModel MemoryPlotModel { get; private set; }
         
         public ReactiveAsyncCommand Start { get; private set; }
-        public ReactiveAsyncCommand Stop { get; private set; }
 
-        /*public string TestMethodName { get; private set; }*/
+        public ReactiveAsyncCommand Stop { get; private set; }
 
         public TestSuiteInfo TestSuiteInfo { get; private set; }
 
@@ -223,8 +246,8 @@
         #endregion // Lab
         
         #region StartValue
-        private double startValue;
-        public double StartValue
+        private int startValue;
+        public int StartValue
         {
             get
             {
@@ -238,8 +261,8 @@
         #endregion // StartValue
 
         #region EndValue
-        private double endValue;
-        public double EndValue
+        private int endValue;
+        public int EndValue
         {
             get
             {

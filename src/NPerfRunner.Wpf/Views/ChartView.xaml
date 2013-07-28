@@ -49,11 +49,11 @@
         </Grid>
         <TabControl>
             <TabItem Header="Speed metrics">
-                <oxy:Plot Model="{Binding SpeedPlotModel}" />
+                <oxy:Plot Model="{Binding SpeedPlotModel}" LegendPlacement="Outside" />
 
             </TabItem>
             <TabItem Header="Memory metrics">
-                <oxy:Plot Model="{Binding MemoryPlotModel}" />
+                <oxy:Plot Model="{Binding MemoryPlotModel}" LegendPlacement="Outside"/>
             </TabItem>
         </TabControl>
     </DockPanel>

@@ -5,8 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <DockPanel LastChildFill="True">
-        <TreeView ItemsSource="{Binding Testers}" DockPanel.Dock="Top" MinHeight="50" MaxHeight="400">
+    <DockPanel LastChildFill="True" >
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical">
+            <TextBlock>Loaded assemblies:</TextBlock>
+            <ScrollViewer>
+                <ListBox MinHeight="100" MaxHeight="150" ItemsSource ="{Binding LoadedAssemblies}" />
+            </ScrollViewer>
+            <Button Command="{Binding LoadAssembly}">Load asembly</Button>
+            <Button Command="{Binding ClearAssembliesList}">Clear</Button>            
+        </StackPanel>
+        
+        <ScrollViewer>
+        <TreeView ItemsSource="{Binding Testers}" >
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                     <StackPanel>
@@ -23,5 +33,6 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
+        </ScrollViewer>        
     </DockPanel>
 </UserControl>
