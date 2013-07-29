@@ -11,11 +11,7 @@
     {
         public CommonData()
         {
-            this.LoadedAssemblies = new ReactiveCollection<Assembly>();
-         
-
-        
-            
+            this.LoadedAssemblies = new ReactiveCollection<Assembly>();   
         }
 
         #region Lab

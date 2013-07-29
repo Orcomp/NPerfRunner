@@ -27,7 +27,9 @@
 
         int StepValue { get; }
 
-        ReactiveAsyncCommand Start { get; }
+        ReactiveAsyncCommand StartSequential { get; }
+
+        ReactiveAsyncCommand StartParallel { get; }
 
         ReactiveAsyncCommand Stop { get; }
 

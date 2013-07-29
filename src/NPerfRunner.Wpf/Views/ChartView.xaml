@@ -43,7 +43,8 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
-                <Button Content="Start" Width="100" Command="{Binding Start}" />
+                <Button Content="Start sequential" Width="100" Command="{Binding StartSequential}" />
+                <Button Content="Start parallel" Width="100" Command="{Binding StartParallel}" />
                 <Button Content="Stop" Width="100" Command="{Binding Stop}"/>
             </StackPanel>
         </Grid>

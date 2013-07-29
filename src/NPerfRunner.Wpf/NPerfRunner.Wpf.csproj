@@ -164,7 +164,6 @@
     <Compile Include="Messages\TestCheckChanged.cs" />
     <Compile Include="PanesStyleSelector.cs" />
     <Compile Include="ViewModels\ChartViewModel.cs" />
-    <Compile Include="ViewModels\ConsoleViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PaneViewModel.cs" />
     <Compile Include="ViewModels\PerfTestTree\TestedTypeNodeViewModel.cs" />
@@ -175,9 +174,6 @@
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="Views\ChartView.xaml.cs">
       <DependentUpon>ChartView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConsoleView.xaml.cs">
-      <DependentUpon>ConsoleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestsTreeView.xaml.cs">
       <DependentUpon>TestsTreeView.xaml</DependentUpon>
@@ -195,10 +191,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ChartView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ConsoleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

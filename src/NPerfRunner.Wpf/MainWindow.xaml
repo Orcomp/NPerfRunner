@@ -4,26 +4,13 @@
         xmlns:local="clr-namespace:NPerfRunner.Wpf"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         Title="MainWindow" Height="500" Width="600" WindowStartupLocation="CenterScreen">
-    <DockPanel LastChildFill="True">
-        <Menu DockPanel.Dock="Top"> 
-            <MenuItem Header="File">
-                <MenuItem Header="Load assembly" Command="{Binding LoadAssebmly}" />
-                <MenuItem Header="Run tests" />
-                <MenuItem Header="Exit"/>
-            </MenuItem>
-            <MenuItem Header="View">
-                
-            </MenuItem>
-        </Menu>
-        <StatusBar DockPanel.Dock="Bottom">
-            <TextBlock Text="{Binding StatusText}"/>
-        </StatusBar>
+    <DockPanel LastChildFill="True">        
         <xcad:DockingManager x:Name="dockManager" 
                                    AnchorablesSource="{Binding Tools, Mode=TwoWay}"
                                    DocumentsSource="{Binding Charts, Mode=TwoWay}">        
             <xcad:DockingManager.LayoutItemTemplate>
                 <DataTemplate>
-                   <ContentControl Content="{Binding View}"/> 
+                    <ContentControl Content="{Binding View}" />
                 </DataTemplate>
             </xcad:DockingManager.LayoutItemTemplate>
             <xcad:DockingManager.LayoutItemContainerStyleSelector>
@@ -35,6 +22,11 @@
                             <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}"/>
                         </Style>
                     </local:PanesStyleSelector.ToolStyle>
+                    <local:PanesStyleSelector.ChartStyle>
+                        <Style TargetType="{x:Type xcad:LayoutDocumentItem}">
+                            <Setter Property="Title" Value="{Binding Model.Title}"/>
+                        </Style>
+                    </local:PanesStyleSelector.ChartStyle>
                 </local:PanesStyleSelector>
             </xcad:DockingManager.LayoutItemContainerStyleSelector>
 

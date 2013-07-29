@@ -24,7 +24,7 @@
     {
         public MainWindowViewModel()
         {
-            this.Tools = new ReactiveCollection<IToolViewModel> { IoC.Instance.Resolve<ITestsTreeViewModel>(), IoC.Instance.Resolve<IConsoleViewModel>() };
+            this.Tools = new ReactiveCollection<IToolViewModel> { IoC.Instance.Resolve<ITestsTreeViewModel>() };
             this.Charts = new ObservableCollection<IChartViewModel>();
 
             MessageBus.Current.Listen<TestCheckChanged>().Subscribe(OnTestCheckChanged);
@@ -90,7 +90,13 @@
                 commonData.Lab.AddAssemblies(assemblies);
             }
 
-            ((ReactiveCollection<Assembly>)commonData.LoadedAssemblies).AddRange(assemblies);
+            foreach (var assembly in assemblies)
+            {
+                if (!((ReactiveCollection<Assembly>) commonData.LoadedAssemblies).Contains(assembly))
+                {
+                    ((ReactiveCollection<Assembly>) commonData.LoadedAssemblies).Add(assembly);
+                }
+            }
         }
 
         private void OnTestCheckChanged(TestCheckChanged testCheckChanged)
@@ -148,20 +154,5 @@
         public ObservableCollection<IChartViewModel> Charts { get; private set; }
 
         public ReactiveAsyncCommand DocClosed { get; private set; }
-
-        #region StatusText
-        private string statusText;
-        public string StatusText
-        {
-            get
-            {
-                return this.statusText;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.StatusText, ref this.statusText, value);
-            }
-        }
-        #endregion // StatusText
     }
 }

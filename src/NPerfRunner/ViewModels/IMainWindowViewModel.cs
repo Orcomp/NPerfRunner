@@ -16,8 +16,5 @@ namespace NPerfRunner.ViewModels
         ObservableCollection<IChartViewModel> Charts { get; }
 
         ReactiveAsyncCommand DocClosed { get; }
-
-        string StatusText { get; set; }
-
     }
 }

@@ -11,6 +11,7 @@
     using NPerf.Lab;
     using NPerfRunner.ViewModels;
     using OxyPlot;
+    using OxyPlot.Axes;
     using OxyPlot.Series;
     using ReactiveUI;
     using ReactiveUI.Xaml;
@@ -24,6 +25,8 @@
 
         public ChartViewModel(PerfLab lab, TestSuiteInfo suiteInfo)
         {
+            this.Title = suiteInfo.TestSuiteDescription;
+
             Lab = lab;
 
             TestSuiteInfo = suiteInfo;
@@ -37,9 +40,14 @@
             SpeedPlotModel =
                 new PlotModel(string.Format("\"{0}\": Time characteristics", suiteInfo.TestSuiteDescription));
 
+            SpeedPlotModel.Axes.Clear();
+            SpeedPlotModel.Axes.Add(new LinearAxis(AxisPosition.Bottom, suiteInfo.FeatureDescription));
            
             MemoryPlotModel =
                 new PlotModel(string.Format("\"{0}\": Memory usage", suiteInfo.TestSuiteDescription));
+
+            MemoryPlotModel.Axes.Clear();
+            MemoryPlotModel.Axes.Add(new LinearAxis(AxisPosition.Bottom, suiteInfo.FeatureDescription));
 
             memorySeries = new Dictionary<TestInfo, LineSeries>();
             speedSeries = new Dictionary<TestInfo, LineSeries>();
@@ -50,15 +58,21 @@
             var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
 
             var whenStarted = this.WhenAny(x => x.IsStarted, x => x.Value);
+            
+            this.StartSequential = new ReactiveAsyncCommand(whenStarted.Select(x => !x));
+            StartSequential.RegisterAsyncAction(OnStartSequential, RxApp.DeferredScheduler);
+            errorHandler.HandleErrors(this.StartSequential);
 
-            this.Start = new ReactiveAsyncCommand(whenStarted.Select(x => !x));
-            Start.RegisterAsyncAction(OnStart, RxApp.DeferredScheduler);
-            errorHandler.HandleErrors(this.Start);
+            this.StartParallel = new ReactiveAsyncCommand(whenStarted.Select(x => !x));
+            StartParallel.RegisterAsyncAction(OnStartParallel, RxApp.DeferredScheduler);
+            errorHandler.HandleErrors(this.StartParallel);
 
             this.Stop = new ReactiveAsyncCommand(whenStarted);            
             Stop.RegisterAsyncAction(OnStop, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.Stop);
-          
+
+            this.WhenAny(x => x.IsLinear, x => x.Value ? EAxisType.Linear : EAxisType.Logarithmic)
+                .Subscribe(SetAxisType);
 
             MessageBus.Current.Listen<PerfTestResult>()
                       .Where(x => tests.FirstOrDefault(t => t.TestId.Equals(x.TestId)) != null)
@@ -81,7 +95,48 @@
 
         private IDisposable subscription = null;
 
-        private void OnStart(object param)
+        private void SetAxisType(EAxisType axisType)
+        {
+            SetAxisType(SpeedPlotModel, axisType);
+            SetAxisType(MemoryPlotModel, axisType);
+        }
+
+        private static void SetAxisType(PlotModel plotModel, EAxisType axisType)
+        {
+            var oldAxis = plotModel.Axes.FirstOrDefault(x => x.Position == AxisPosition.Left);
+            if (oldAxis != null)
+            {
+                plotModel.Axes.Remove(oldAxis);
+            }
+
+            if (axisType == EAxisType.Linear)
+            {
+                plotModel.Axes.Add(new LinearAxis(AxisPosition.Left));
+            }
+            else
+            {
+                plotModel.Axes.Add(new LogarithmicAxis(AxisPosition.Left));
+            }
+
+            plotModel.RefreshPlot(true);
+        }
+
+        private void OnStartSequential(object param)
+        {
+            PrepareStart();
+
+            Task.Factory.StartNew(
+                () =>
+                {
+                    subscription = this.Lab.Run(tests.Select(x => x.TestId).ToArray(), StartValue, StepValue, EndValue, false)
+                        .Subscribe(
+                            res => MessageBus.Current.SendMessage(res),
+                            ex => { IsStarted = false; },
+                            () => { IsStarted = false; });
+                });
+        }
+
+        private void OnStartParallel(object param)
         {
             PrepareStart();
 
@@ -155,8 +210,10 @@
         public PlotModel SpeedPlotModel { get; private set; }
 
         public PlotModel MemoryPlotModel { get; private set; }
-        
-        public ReactiveAsyncCommand Start { get; private set; }
+
+        public ReactiveAsyncCommand StartSequential { get; private set; }
+
+        public ReactiveAsyncCommand StartParallel { get; private set; }
 
         public ReactiveAsyncCommand Stop { get; private set; }
 

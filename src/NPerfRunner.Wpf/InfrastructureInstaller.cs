@@ -22,19 +22,10 @@
             IoC.Instance.RegisterSingleton(typeof(IMainWindowViewModel), typeof(MainWindowViewModel));
             IoC.Instance.RegisterSingleton(typeof(IViewFor<IMainWindowViewModel>), typeof(MainWindow));
 
-/*            IoC.Instance.RegisterSingleton(typeof(ISettingsViewModel), typeof(SettingsViewModel));
-            IoC.Instance.RegisterSingleton(typeof(IViewFor<ISettingsViewModel>), typeof(SettingsView));*/
-
             IoC.Instance.RegisterSingleton(typeof(ILoadAssemblyDialog), typeof(LoadAssemblyDialog));            
-
-            IoC.Instance.RegisterSingleton(typeof(IViewFor<IConsoleViewModel>), typeof(ConsoleView));
-            IoC.Instance.RegisterSingleton(typeof(IConsoleViewModel), typeof(ConsoleViewModel));
 
             IoC.Instance.RegisterSingleton(typeof(IViewFor<ITestsTreeViewModel>), typeof(TestsTreeView));
             IoC.Instance.RegisterSingleton(typeof(ITestsTreeViewModel), typeof(TestsTreeViewModel));
-
-/*            IoC.Instance.RegisterSingleton(typeof(IViewFor<IChartViewModel>), typeof(ChartView));
-            IoC.Instance.RegisterSingleton(typeof(IChartViewModel), typeof(ChartViewModel));*/
             
             RxApp.DeferredScheduler = new DispatcherScheduler(Application.Current.Dispatcher);                      
 
