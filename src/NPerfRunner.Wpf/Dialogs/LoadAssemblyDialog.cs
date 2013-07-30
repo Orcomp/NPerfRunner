@@ -4,6 +4,8 @@
     using System.Reactive.Linq;
     using System.Reflection;
     using Microsoft.Win32;
+
+
     using NPerfRunner.Dialogs;
     using System.IO;
 
@@ -23,17 +25,7 @@
             if (this.dialog.ShowDialog().Value)
             {
                 var file = new FileInfo(this.dialog.FileName);
-                var newFile = Environment.CurrentDirectory + "\\" + file.Name;
-                try
-                {
-                    // TODO: think how to make this more elegant
-                    File.Copy(this.dialog.FileName, newFile, true);
-                }
-                catch (IOException)
-                {
-                }
-
-                result = Assembly.LoadFile(newFile);
+                result = Assembly.LoadFile(this.dialog.FileName);
             }
 
             return result;

@@ -190,9 +190,6 @@
                 {
                     view = new ChartView();
                     ((ChartView) view).BindViewModel(this);
-                    view.ObservableForProperty(v => v.IsVisible, false, false)
-                        .Select(x => x.Value)
-                        .BindTo(this, x => x.IsVisible);
                 }
 
                 return view;

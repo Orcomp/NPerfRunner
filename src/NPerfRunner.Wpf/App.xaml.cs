@@ -1,7 +1,11 @@
 ﻿namespace NPerfRunner
 {
     using System;
+    using System.IO;
+    using System.Reflection;
     using System.Windows;
+
+    using NPerf.Core.Tools;
 
     using NPerfRunner.Wpf;
 
@@ -12,11 +16,14 @@
     /// </summary>
     public partial class App : Application
     {
+
         protected override void OnStartup(StartupEventArgs e)
-        {
+        {            
             InfrastructureInstaller.Install();
             UserError.RegisterHandler((Func<UserError, IObservable<RecoveryOptionResult>>)IoC.Instance.Resolve<ErrorHandler>().HandleError);
             base.OnStartup(e);
+            AppDomain.CurrentDomain.AssemblyLoad += AssemblyResolver.Loaded;
+            AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolver.Resolve;
         }
     }
 }

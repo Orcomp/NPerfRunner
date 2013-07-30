@@ -17,12 +17,6 @@ namespace NPerfRunner.ViewModels
 
         string ContentId { get; set; }
 
-        bool IsSelected { get; set; }
-
-        bool IsActive { get; set; }
-
         FrameworkElement View { get; }
-
-        bool IsVisible { get; set; }
     }
 }
