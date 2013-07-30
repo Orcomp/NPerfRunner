@@ -42,7 +42,7 @@
 
             SpeedPlotModel.Axes.Clear();
             SpeedPlotModel.Axes.Add(new LinearAxis(AxisPosition.Bottom, suiteInfo.FeatureDescription));
-           
+
             MemoryPlotModel =
                 new PlotModel(string.Format("\"{0}\": Memory usage", suiteInfo.TestSuiteDescription));
 
@@ -58,7 +58,7 @@
             var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
 
             var whenStarted = this.WhenAny(x => x.IsStarted, x => x.Value);
-            
+
             this.StartSequential = new ReactiveAsyncCommand(whenStarted.Select(x => !x));
             StartSequential.RegisterAsyncAction(OnStartSequential, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.StartSequential);
@@ -67,7 +67,7 @@
             StartParallel.RegisterAsyncAction(OnStartParallel, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.StartParallel);
 
-            this.Stop = new ReactiveAsyncCommand(whenStarted);            
+            this.Stop = new ReactiveAsyncCommand(whenStarted);
             Stop.RegisterAsyncAction(OnStop, RxApp.DeferredScheduler);
             errorHandler.HandleErrors(this.Stop);
 
@@ -127,13 +127,14 @@
 
             Task.Factory.StartNew(
                 () =>
-                {
-                    subscription = this.Lab.Run(tests.Select(x => x.TestId).ToArray(), StartValue, StepValue, EndValue, false)
-                        .Subscribe(
-                            res => MessageBus.Current.SendMessage(res),
-                            ex => { IsStarted = false; },
-                            () => { IsStarted = false; });
-                });
+                    {
+                        subscription = this.Lab.Run(tests.Select(x => x.TestId)
+                                                         .ToArray(), StartValue, StepValue, EndValue, false)
+                                           .Subscribe(
+                                               res => MessageBus.Current.SendMessage(res),
+                                               ex => { IsStarted = false; },
+                                               () => { IsStarted = false; });
+                    });
         }
 
         private void OnStartParallel(object param)
@@ -143,11 +144,12 @@
             Task.Factory.StartNew(
                 () =>
                     {
-                        subscription = this.Lab.Run(tests.Select(x => x.TestId).ToArray(), StartValue, StepValue, EndValue, true)
-                            .Subscribe(
-                                res => MessageBus.Current.SendMessage(res),
-                                ex => { IsStarted = false; },
-                                () => { IsStarted = false; });
+                        subscription = this.Lab.Run(tests.Select(x => x.TestId)
+                                                         .ToArray(), StartValue, StepValue, EndValue, true)
+                                           .Subscribe(
+                                               res => MessageBus.Current.SendMessage(res),
+                                               ex => { IsStarted = false; },
+                                               () => { IsStarted = false; });
                     });
         }
 
@@ -155,7 +157,8 @@
         {
             IsStarted = true;
 
-            foreach (var series in memorySeries.Select(m => m.Value).Union(speedSeries.Select(s => s.Value)))
+            foreach (var series in memorySeries.Select(m => m.Value)
+                                               .Union(speedSeries.Select(s => s.Value)))
             {
                 series.Points.Clear();
             }
@@ -171,7 +174,7 @@
             IsStarted = false;
         }
 
-        
+
         private static void AddPoint(IDictionary<TestInfo, LineSeries> dict, PlotModel plotModel, TestInfo test,
                                      double xValue, double yValue)
         {
@@ -196,12 +199,9 @@
             }
         }
 
-        public IEnumerable<TestInfo> Tests 
+        public IEnumerable<TestInfo> Tests
         {
-            get
-            {
-                return this.tests.AsEnumerable();
-            }
+            get { return this.tests.AsEnumerable(); }
         }
 
         public PlotModel SpeedPlotModel { get; private set; }
@@ -255,94 +255,75 @@
         }
 
         #region IsLinear
+
         private bool isLinear;
+
         public bool IsLinear
         {
-            get
-            {
-                return this.isLinear;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.IsLinear, ref this.isLinear, value);
-            }
+            get { return this.isLinear; }
+            set { this.RaiseAndSetIfChanged(x => x.IsLinear, ref this.isLinear, value); }
         }
+
         #endregion // IsLinear
-        
+
         #region IsStarted
+
         private bool isStarted;
+
         public bool IsStarted
         {
-            get
-            {
-                return this.isStarted;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.IsStarted, ref this.isStarted, value);
-            }
+            get { return this.isStarted; }
+            set { this.RaiseAndSetIfChanged(x => x.IsStarted, ref this.isStarted, value); }
         }
+
         #endregion // IsStarted
 
         #region Lab
+
         private PerfLab lab;
+
         public PerfLab Lab
         {
-            get
-            {
-                return this.lab;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.Lab, ref this.lab, value);
-            }
+            get { return this.lab; }
+            set { this.RaiseAndSetIfChanged(x => x.Lab, ref this.lab, value); }
         }
+
         #endregion // Lab
-        
+
         #region StartValue
+
         private int startValue;
+
         public int StartValue
         {
-            get
-            {
-                return this.startValue;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.StartValue, ref this.startValue, value);
-            }
+            get { return this.startValue; }
+            set { this.RaiseAndSetIfChanged(x => x.StartValue, ref this.startValue, value); }
         }
+
         #endregion // StartValue
 
         #region EndValue
+
         private int endValue;
+
         public int EndValue
         {
-            get
-            {
-                return this.endValue;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.EndValue, ref this.endValue, value);
-            }
+            get { return this.endValue; }
+            set { this.RaiseAndSetIfChanged(x => x.EndValue, ref this.endValue, value); }
         }
+
         #endregion // EndValue
 
         #region StepValue
+
         private int stepValue;
+
         public int StepValue
         {
-            get
-            {
-                return this.stepValue;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.StepValue, ref this.stepValue, value);
-            }
+            get { return this.stepValue; }
+            set { this.RaiseAndSetIfChanged(x => x.StepValue, ref this.stepValue, value); }
         }
-        #endregion // StepValue
 
+        #endregion // StepValue
     }
 }
