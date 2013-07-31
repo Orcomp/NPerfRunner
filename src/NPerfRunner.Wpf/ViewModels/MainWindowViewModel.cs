@@ -149,9 +149,9 @@
 
         }
 
-        public ReactiveCollection<IToolViewModel> Tools { get; private set; }
+        public ReactiveCollection<IToolViewModel> Tools { get;  set; }
 
-        public ObservableCollection<IChartViewModel> Charts { get; private set; }
+        public ObservableCollection<IChartViewModel> Charts { get; set; }
 
         public ReactiveAsyncCommand DocClosed { get; private set; }
     }
