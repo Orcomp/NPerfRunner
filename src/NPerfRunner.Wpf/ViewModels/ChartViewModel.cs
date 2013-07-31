@@ -16,6 +16,7 @@
     using ReactiveUI;
     using ReactiveUI.Xaml;
     using Views;
+    using Fasterflect;
 
     public class ChartViewModel : PaneViewModel, IChartViewModel
     {
@@ -91,6 +92,44 @@
                                                nextRes.Duration);
                                   }
                               });
+
+            ConnectIterationAndDescriptors();
+        }
+
+        private void ConnectIterationAndDescriptors()
+        {
+
+            this.ObservableForProperty(x => x.StartValue, false, false).Subscribe(x => this.RefreshDescriptors());
+
+            this.ObservableForProperty(x => x.EndValue, false, false).Subscribe(x => this.RefreshDescriptors());
+
+            this.ObservableForProperty(x => x.StepValue, false, false).Subscribe(x => this.RefreshDescriptors());
+        }
+
+        private void RefreshDescriptors()
+        {
+            this.StartDescriptor = this.GetDescriptor(this.StartValue);
+            this.EndDescriptor = this.GetDescriptor(this.EndValue);
+
+            this.StepDescriptor = (EndDescriptor - StartDescriptor) * this.StepValue
+                                  / (this.EndValue - this.StartValue);
+        }
+
+        private object tester;
+
+        private double GetDescriptor(int iteration)
+        {
+            if (tester == null)
+            {
+                tester = TestSuiteInfo.TesterType.CreateInstance();
+            }
+
+            if (string.IsNullOrEmpty(TestSuiteInfo.GetDescriptoMethodName))
+            {
+                return (double)iteration;
+            }
+
+            return (double)tester.CallMethod(TestSuiteInfo.GetDescriptoMethodName, iteration);
         }
 
         private IDisposable subscription = null;
@@ -325,5 +364,51 @@
         }
 
         #endregion // StepValue
+        
+
+        public string FeatureDescription
+        {
+            get
+            {
+                return this.TestSuiteInfo.FeatureDescription;
+            }
+        }
+
+        
+        #region StartDescriptor
+
+        private double startDescriptor;
+
+        public double StartDescriptor
+        {
+            get { return this.startDescriptor; }
+            set { this.RaiseAndSetIfChanged(x => x.StartDescriptor, ref this.startDescriptor, value); }
+        }
+
+        #endregion // StartDescriptor
+        
+        #region EndDescriptor
+
+        private double endDescriptor;
+
+        public double EndDescriptor
+        {
+            get { return this.endDescriptor; }
+            set { this.RaiseAndSetIfChanged(x => x.EndDescriptor, ref this.endDescriptor, value); }
+        }
+
+        #endregion // EndDescriptor
+        
+        #region StepDescriptor
+
+        private double stepDescriptor;
+
+        public double StepDescriptor
+        {
+            get { return this.stepDescriptor; }
+            set { this.RaiseAndSetIfChanged(x => x.StepDescriptor, ref this.stepDescriptor, value); }
+        }
+
+        #endregion // StepDescriptor
     }
 }

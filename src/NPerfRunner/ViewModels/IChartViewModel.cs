@@ -27,6 +27,14 @@
 
         int StepValue { get; }
 
+        string FeatureDescription { get; }
+
+        double StartDescriptor { get; }
+
+        double EndDescriptor { get; }
+
+        double StepDescriptor { get; }
+
         ReactiveAsyncCommand StartSequential { get; }
 
         ReactiveAsyncCommand StartParallel { get; }

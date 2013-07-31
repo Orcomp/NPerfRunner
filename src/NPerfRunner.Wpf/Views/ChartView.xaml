@@ -10,7 +10,7 @@
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="15" />
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -19,22 +19,44 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             
-            <TextBlock Text="X-Axis (iterations)" FontWeight="Bold" TextAlignment="Left" Grid.Column="0" Grid.Row="0"/>
+            <TextBlock Text="X-Axis" FontWeight="Bold" TextAlignment="Center" Grid.Column="0" Grid.Row="0"/>
             <TextBlock Text="Y-Axis" FontWeight="Bold" TextAlignment="Left" Grid.Column="2" Grid.Row="0" />
                         
             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left">
-                <DockPanel LastChildFill="False">
-                    <TextBlock DockPanel.Dock="Left"  Text="Starts with"/>
-                    <TextBox DockPanel.Dock="Right" Width="100" Text="{Binding StartValue}"/>
-                </DockPanel>
-                <DockPanel LastChildFill="False">
-                    <TextBlock DockPanel.Dock="Left"  Text="Ends with"/>
-                    <TextBox DockPanel.Dock="Right" Width="100" Text="{Binding EndValue}" />
-                </DockPanel>
-                <DockPanel LastChildFill="False">
-                    <TextBlock DockPanel.Dock="Left"  Text="Step"/>
-                    <TextBox DockPanel.Dock="Right" Width="100" Text="{Binding StepValue}"/>
-                </DockPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Iterations" FontWeight="Bold" TextAlignment="Right" Grid.Column="0" Grid.Row="0"/>
+                    <TextBlock Text="{Binding FeatureDescription}" FontWeight="Bold" TextAlignment="Center" Grid.Column="2" Grid.Row="0"/>
+                    
+                    <DockPanel LastChildFill="False" Grid.Column="0" Grid.Row="1">
+                        <TextBlock DockPanel.Dock="Left"  Text="Starts with" />
+                        <TextBox DockPanel.Dock="Right" Width="50" Text="{Binding StartValue}" TextAlignment="Right"/>
+                    </DockPanel>
+                    <TextBlock Text="{Binding StartDescriptor}" TextAlignment="Left" Grid.Column="2" Grid.Row="1"/>
+                    
+                    <DockPanel LastChildFill="False" Grid.Column="0" Grid.Row="2">
+                        <TextBlock DockPanel.Dock="Left"  Text="Ends with" />
+                        <TextBox DockPanel.Dock="Right" Width="50" Text="{Binding EndValue}" TextAlignment="Right" />
+                    </DockPanel>
+                    <TextBlock Text="{Binding EndDescriptor}" TextAlignment="Left" Grid.Column="2" Grid.Row="2"/>
+                    
+                    <DockPanel LastChildFill="False" Grid.Column="0" Grid.Row="3">
+                        <TextBlock DockPanel.Dock="Left"  Text="Step"/>
+                        <TextBox DockPanel.Dock="Right" Width="50" Text="{Binding StepValue}" TextAlignment="Right"/>
+                    </DockPanel>
+                    <TextBlock Text="{Binding StepDescriptor}" TextAlignment="Left" Grid.Column="2" Grid.Row="3"/>
+                </Grid>                
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Left">
