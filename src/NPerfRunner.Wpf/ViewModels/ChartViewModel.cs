@@ -81,6 +81,7 @@
                           res =>
                               {
                                   var nextRes = res as NextResult;
+                                  var errorRes = res as ExperimentError;
                                   if (nextRes != null)
                                   {
                                       AddPoint(memorySeries, MemoryPlotModel,
@@ -91,7 +92,13 @@
                                                tests.First(x => x.TestId.Equals(res.TestId)), nextRes.Descriptor,
                                                nextRes.Duration);
                                   }
-                              });
+
+                                  if (errorRes != null)
+                                  {
+                                      var test = tests.FirstOrDefault(x => x.TestId.Equals(errorRes.TestId));
+                                      Task.Factory.StartNew(() => errorHandler.ReportExperimentError(errorRes, test));
+                                  }
+                              }, errorHandler.ReportException);
 
             ConnectIterationAndDescriptors();
         }
@@ -163,7 +170,7 @@
         private void OnStartSequential(object param)
         {
             PrepareStart();
-
+            var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
             Task.Factory.StartNew(
                 () =>
                     {
@@ -171,7 +178,11 @@
                                                          .ToArray(), StartValue, StepValue, EndValue, false)
                                            .Subscribe(
                                                res => MessageBus.Current.SendMessage(res),
-                                               ex => { IsStarted = false; },
+                                               ex =>
+                                                   {
+                                                       errorHandler.ReportException(ex);
+                                                       IsStarted = false;
+                                                   },
                                                () => { IsStarted = false; });
                     });
         }

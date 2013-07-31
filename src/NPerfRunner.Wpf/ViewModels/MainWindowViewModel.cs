@@ -67,8 +67,6 @@
                 return;
             }
 
-            var commonData = IoC.Instance.Resolve<CommonData>();
-
             ReloadLab(assembly);
         }
 
@@ -114,7 +112,6 @@
 
         private void OnTestCheckChanged(TestCheckChanged testCheckChanged)
         {
-            var testNode = testCheckChanged.TreeItem as TestNodeViewModel;
             var testerNode = testCheckChanged.TreeItem as TesterNodeViewModel;
             var testedNode = testCheckChanged.TreeItem as TestedTypeNodeViewModel;
 

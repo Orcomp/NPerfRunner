@@ -24,6 +24,21 @@
             base.OnStartup(e);
             AppDomain.CurrentDomain.AssemblyLoad += AssembliesManager.Loaded;
             AppDomain.CurrentDomain.AssemblyResolve += AssembliesManager.Resolve;
+
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+        }
+
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var ex = e.ExceptionObject as Exception;
+
+            if (ex == null)
+            {
+                return;
+            }
+
+            var errorHandler = IoC.Instance.Resolve<ErrorHandler>();
+            errorHandler.ReportException(ex);
         }
     }
 }
