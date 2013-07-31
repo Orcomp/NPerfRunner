@@ -51,14 +51,15 @@
             MessageBus.Current.SendMessage(new ChartRemoved(chart));
         }
 
-        private static void OnClearAssembliesList(ClearAssembliesList param)
+        private void OnClearAssembliesList(ClearAssembliesList param)
         {
             var commonData = IoC.Instance.Resolve<CommonData>();
             commonData.Lab = null;
+            ClearCharts();
             ((ReactiveCollection<Assembly>)commonData.LoadedAssemblies).Clear();
         }
 
-        private static void OnLoadAssembly(LoadAssembly param)
+        private void OnLoadAssembly(LoadAssembly param)
         {
             var assembly = IoC.Instance.Resolve<ILoadAssemblyDialog>().LoadAssembly("Load assembly");
             if (assembly == null)
@@ -71,9 +72,21 @@
             ReloadLab(assembly);
         }
 
-        private static void ReloadLab(params Assembly[] assemblies)
+        private void ClearCharts()
+        {
+            foreach (var chart in this.Charts.Where(x => x.IsStarted))
+            {
+                chart.Stop.Publish();
+            }
+
+            this.Charts.Clear();
+        }
+
+        private void ReloadLab(params Assembly[] assemblies)
         {
             var commonData = IoC.Instance.Resolve<CommonData>();
+
+            ClearCharts();
 
             if (!assemblies.Any() && !commonData.LoadedAssemblies.Any())
             {

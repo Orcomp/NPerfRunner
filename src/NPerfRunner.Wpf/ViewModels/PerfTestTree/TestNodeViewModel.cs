@@ -27,7 +27,8 @@ namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
             this.Tests = testSuite.Tests.Where(x => x.TestMethodName == testMethodName).ToArray();
             this.Name = testMethodName;
             this.Children.AddRange(from testInfo in this.Tests
-                                   select new TestedTypeNodeViewModel(this, perfLab, testInfo) {IsChecked = false});                        
+                                   select new TestedTypeNodeViewModel(this, perfLab, testInfo) {IsChecked = false});
+            this.IsEnabled = this.Children.Count > 0;
         }        
     }
 }
