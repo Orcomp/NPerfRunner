@@ -5,6 +5,7 @@
     using System.Reflection;
     using Microsoft.Win32;
 
+    using NPerf.Core.Tools;
 
     using NPerfRunner.Dialogs;
     using System.IO;
@@ -25,7 +26,7 @@
             if (this.dialog.ShowDialog().Value)
             {
                 var file = new FileInfo(this.dialog.FileName);
-                result = Assembly.LoadFile(this.dialog.FileName);
+                result = AssembliesManager.LoadAssembly(this.dialog.FileName);
             }
 
             return result;
