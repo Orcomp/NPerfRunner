@@ -1,0 +1,44 @@
+﻿<Window x:Class="NPerfRunner.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+        xmlns:local="clr-namespace:NPerfRunner.Wpf"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        Title="MainWindow" Height="500" Width="600" WindowStartupLocation="CenterScreen">
+    <DockPanel LastChildFill="True">        
+        <xcad:DockingManager x:Name="dockManager" 
+                                   AnchorablesSource="{Binding Tools, Mode=TwoWay}"
+                                   DocumentsSource="{Binding Charts, Mode=TwoWay}">        
+            <xcad:DockingManager.LayoutItemTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding View}" />
+                </DataTemplate>
+            </xcad:DockingManager.LayoutItemTemplate>
+            <xcad:DockingManager.LayoutItemContainerStyleSelector>
+                <local:PanesStyleSelector>
+                    <local:PanesStyleSelector.ToolStyle>
+                        <Style TargetType="{x:Type xcad:LayoutAnchorableItem}">
+                            <Setter Property="Title" Value="{Binding Model.Title}"/>
+                        </Style>
+                    </local:PanesStyleSelector.ToolStyle>
+                    <local:PanesStyleSelector.ChartStyle>
+                        <Style TargetType="{x:Type xcad:LayoutDocumentItem}">
+                            <Setter Property="Title" Value="{Binding Model.Title}"/>
+                        </Style>
+                    </local:PanesStyleSelector.ChartStyle>
+                </local:PanesStyleSelector>
+            </xcad:DockingManager.LayoutItemContainerStyleSelector>
+
+            <xcad:DockingManager.LayoutUpdateStrategy>
+                <local:LayoutInitializer/>
+            </xcad:DockingManager.LayoutUpdateStrategy>
+            
+            <xcad:LayoutRoot>
+                <xcad:LayoutPanel Orientation="Horizontal">                    
+                    <xcad:LayoutAnchorablePane Name="ToolsPane" DockWidth="200" >
+                    </xcad:LayoutAnchorablePane>
+                    <xcad:LayoutDocumentPane/>
+                </xcad:LayoutPanel>
+            </xcad:LayoutRoot> 
+        </xcad:DockingManager>
+    </DockPanel>
+</Window>
