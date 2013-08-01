@@ -48,6 +48,6 @@ Click on the "Load Assemblies" button. Select the two assemblies mentioned above
 
 You should get a picture like this:
 
-![NPerfRunner](Orcomp.github.com/repository/docs/img/NPerfRunner.png)
+![NPerfRunner](docs/img/NPerfRunner.png)
 
 The chart uses the Oxyplot library (http://oxyplot.codeplex.com/) so you can zoom, pan, click on a line to see tooltips etc... (Please refere to the oxyplot homepage for shortcut keys.)
