@@ -49,7 +49,7 @@ namespace NPerfRunner.Wpf.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    throw new NotImplementedException();
+                    errorHandler.ReportException(ex);
                 }
             });
         }

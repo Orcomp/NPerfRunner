@@ -22,6 +22,7 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <CheckBox
+                                IsEnabled="{Binding IsEnabled}"
                                     Focusable="False" 
                                     IsChecked="{Binding IsChecked}"
                                     VerticalAlignment="Center" IsThreeState="False" />

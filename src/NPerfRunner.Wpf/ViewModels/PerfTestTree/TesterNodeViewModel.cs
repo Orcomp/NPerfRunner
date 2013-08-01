@@ -29,6 +29,8 @@ namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
                              .Select(x => new TestNodeViewModel(this, lab, testSuiteInfo, x.Key)));
 
             MessageBus.Current.Listen<ChartRemoved>().Subscribe(OnChartRemoved);
+
+            this.IsEnabled = this.Children.Count > 0;
         }
 
         private void OnChartRemoved(ChartRemoved chart)

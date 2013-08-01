@@ -41,19 +41,19 @@
                     
                     <DockPanel LastChildFill="False" Grid.Column="0" Grid.Row="1">
                         <TextBlock DockPanel.Dock="Left"  Text="Starts with" />
-                        <TextBox DockPanel.Dock="Right" Width="50" Text="{Binding StartValue}" TextAlignment="Right"/>
+                        <TextBox DockPanel.Dock="Right" Width="50" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=StartValue}" TextAlignment="Right"/>
                     </DockPanel>
                     <TextBlock Text="{Binding StartDescriptor}" TextAlignment="Left" Grid.Column="2" Grid.Row="1"/>
                     
                     <DockPanel LastChildFill="False" Grid.Column="0" Grid.Row="2">
                         <TextBlock DockPanel.Dock="Left"  Text="Ends with" />
-                        <TextBox DockPanel.Dock="Right" Width="50" Text="{Binding EndValue}" TextAlignment="Right" />
+                        <TextBox DockPanel.Dock="Right" Width="50" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=EndValue}" TextAlignment="Right" />
                     </DockPanel>
                     <TextBlock Text="{Binding EndDescriptor}" TextAlignment="Left" Grid.Column="2" Grid.Row="2"/>
                     
                     <DockPanel LastChildFill="False" Grid.Column="0" Grid.Row="3">
                         <TextBlock DockPanel.Dock="Left"  Text="Step"/>
-                        <TextBox DockPanel.Dock="Right" Width="50" Text="{Binding StepValue}" TextAlignment="Right"/>
+                        <TextBox DockPanel.Dock="Right" Width="50" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=StepValue}" TextAlignment="Right"/>
                     </DockPanel>
                     <TextBlock Text="{Binding StepDescriptor}" TextAlignment="Left" Grid.Column="2" Grid.Row="3"/>
                 </Grid>                

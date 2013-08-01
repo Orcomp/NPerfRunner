@@ -27,6 +27,7 @@ namespace NPerfRunner.Wpf.ViewModels.PerfTestTree
             this.perfLab = lab;
             this.TestInfo = testInfo;
             this.Name = testInfo.TestedType.FullName;
+            this.IsEnabled = true;
         }
     }
 }

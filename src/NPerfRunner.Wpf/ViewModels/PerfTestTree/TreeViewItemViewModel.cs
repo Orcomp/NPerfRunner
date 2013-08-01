@@ -27,6 +27,16 @@
             protected set { this.RaiseAndSetIfChanged(x => x.Name, ref this.name, value); }
         }
 
+        private bool isEnabled;
+        public bool IsEnabled
+        {
+            get { return isEnabled; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.IsEnabled, ref this.isEnabled, value);
+            }
+        }
+
         private bool? isChecked;
         public bool? IsChecked
         {
