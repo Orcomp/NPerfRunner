@@ -247,10 +247,6 @@ You can better see that the C5 ArrayList and the BCL List have linear time compl
 There are more screenshots results comparing the BCL with C5 classes in this repository [at /docs/img/][https://github.com/Orcomp/NPerfRunner/docs/img/]
 
 
-Links
-======
-
-Eric Lippert has written some nice articles on performance profiling. [Part 1](http://tech.pro/blog/1293/c-performance-benchmark-mistakes-part-one), [Part 2](http://tech.pro/tutorial/1295/c-performance-benchmark-mistakes-part-two), [Part 3](http://tech.pro/tutorial/1317/c-performance-benchmark-mistakes-part-three), [part 4](http://tech.pro/tutorial/1433/performance-benchmark-mistakes-part-four)
 
 Troubleshooting
 ===============
