@@ -1,5 +1,7 @@
-NPerfRunner: Run your NPerf performance tests
-=============================================
+NPerfRunner
+===========
+The tool to run your NPerf performance tests
+--------------------------------------------
 
 NPerf Runner is a easy-to-use **performance and memory benchmark runner for [NPerf Framework][NPerfProject]**.
 
@@ -37,15 +39,16 @@ Introduction
 
 NPerf and NPerfRunner allow you to run performance tests against existing assemblies **without having to change a line of code on the target assemblies**.
 
-If the methods you want to performance test implements an interface, you can write a performance fixture for that interface.
+If the methods you want to performance test implements an interface, you can **write a performance fixture for that interface**.
 Once you have a compiled fixture, you can load it into NPerfRunner as well as the assemblies you want to performance test. NPerfRunner accepts multiple target assemblies.
 
-NPerfRunner will find all the classes in all the target assemblies that implement the desired interface and run the tests against them.
+**NPerfRunner will find all the classes in all the target assemblies that implement the desired interface** and run the tests against them.
 The performance results (time and memory) will be dynamically displayed on the chart.
 
 The collection size as well as the chart axis scale (logarithmic or linear) can easily be changed.
 
-For examples on how to write performance fixtures please have a look at [Orcomp repository][OrcompSamples].
+For examples on how to write performance fixtures [go down in this document to "How it works" section](#how-it-works)
+or have a look at [Orcomp repository][OrcompSamples].
 
 
 
@@ -59,6 +62,7 @@ Setup in 5 steps
 You will need these repositories:
 + NPerf Framework: https://github.com/Orcomp/NPerf
 + NPerf Runner: https://github.com/Orcomp/NPerfRunner (this one)
+
 So download both zipped repositories or Git clone them to the same local folder.
 
 #### Step 2: Place both solutions in the same folder.
@@ -66,14 +70,17 @@ Let's suppose your base folder is "PerformanceTest”, then the structure must b
 + […]/PerformanceTest/NPerf/
 + […]/PerformanceTest/NPerfRunner/docs/
 + […]/PerformanceTest/NPerfRunner/src/
+
 > It’s important to name “NPerf” the folder because NPerfRunner solution imports libraries from it.
 > Otherwise, when you try to build NPerfRunner, it is going to fail because it can’t find required libraries.
 
 #### Step 3: Open NPerf solution with Visual Studio and build it.
 + Open [...]/PerformanceTest/NPerf/src/Nperf.sln.
 + Build the solution.
+
 > There may be some errors because Visual Studio can’t load missing packages.
 > If so, go to TOOLS > Options... > Package Manager > General and check “Allow NuGet to download missing packages during build”. Then rebuild the solution.
+> See also [Troubleshooting section](#troubleshooting) down in this document.
 
 #### Step 4: Open NPerfRunner solution with Visual Studio and build it.
 + Open [...]/PerformanceTest/NPerfRunner/src/NPerfRunner.sln
@@ -82,8 +89,8 @@ Let's suppose your base folder is "PerformanceTest”, then the structure must b
 
 #### Step 5: Load the assemblies (dll’s) with the NPerf tests and start the tests.
 + On the NPerfRunner WPF application window, click “Load assembly...”.
-+ Then browse for the assembly with the test classes.
 + Then load all the assemblies you want which contain implementations of the targeted interfaces.
++ Then load the assemblies with the test classes.
 + Select the test fixtures you want to run by checking them on the tests tree panel.
 + If everything loaded correctly, click on “Start sequential” and you’ll get the graph.
 
@@ -98,9 +105,9 @@ These test fixture compares different sorting algorithms for lists.
 > You can find them at https://github.com/Orcomp/Orcomp/tree/master/Orc/Algorithms/Sort.
 
 
-1. Unblock the file [...]/PerformanceTest/NPerfRunner/docs/sample/NPerf.Fixture.ISorter.zipb
+1. Unblock the file [...]/NPerfRunner/docs/sample/NPerf.Fixture.ISorter.zipb
     by right-­clicking onto it, then open “Properties”, and then click on “Unblock” at the bottom of the “General” tab.
-2. Unzip [...]/PerformanceTest/NPerfRunner/docs/sample/NPerf.Fixture.ISorter.zip in the same folder.
+2. Unzip [...]/NPerfRunner/docs/sample/NPerf.Fixture.ISorter.zip in the same folder.
 3. Launch NPerfRunner WPF application.
 4. On the main window click “Load assembly...” and browse for the assembly with the test fixture: [...]/NPerfRunner/docs/sample/NPerf.Fixture.ISorter/NPerf.Fixture.ISorter.dll.
 5. Then, load the assembly [...]/NPerfRunner/docs/sample/NPerf.Fixture.ISorter/Orc.dll.
@@ -109,24 +116,34 @@ You should get a picture like this:
 
 ![NPerfRunner](docs/img/NPerfRunner.png)
 
+On the previous the chart you can see a set of **sorting algorithms with linear time complexity (e.g. QuickSort)**
+and a set of algorithms with **logarithmic time complexity (e.g. ShellSort)**.
+*Note the logarithmic scale on time axis*.
+
 > The chart uses the [Oxyplot library][Oxyplot], so you can zoom, pan, click on a line to see tooltips, etc...
 > Please refere to the oxyplot homepage for shortcut keys.
 
 NPerf.Fixture.IList example
 ---------------------------
 
-This sample test fixture compares the performance of several System.Collections.Generic.IList<T> implementations from two libraries:
-+ **.NET Base Class Library (BCL)**: Located in the assembly mscorlib.dll.
-    http://msdn.microsoft.com/en-us/library/gg145045.aspx
-+ **C5 Library**: There's a copy into NPerfRunner/src/libs folder for testing.
-    Homepage: http://www.itu.dk/research/c5/
-    GitHub repository: https://github.com/sestoft/C5/
+Into **NPerfRunner solution** there is a **project called NPerf.Fixture.IList**.
+Into this project there is a **class called IListPerfs** that has an NPerf test fixture.
 
-Into NPerfRunner solution there is a project called NPerf.Fixture.IList which contains these performance tests.
-Into this project there is a class called IListPerfs that has the test fixtures.
+**This fixture allows you to compare several operations of an IList&lt;T&gt; implementation** such as:
++ Adding an element to the list (Add method).
++ Inserting an element in the list (Insert method) in different positions.
++ Counting the elements of the list (Count method).
++ Remove all the elements of the list (Clear method).
++ Check if the list has a given element (Contains method)
++ Remove elements from the list (Remove method).
++ Remove elements at certain positions (RemoveAt method).
 
-*PerfTester* attribute tells NPerf framework this class is a test fixture, in this case, for the target type
-IList<int>. 20 is the number of times a test method is going to be executed.
+An *NPerf test fixture is a class with certain attributes* and methods provided by NPerf framework.
+
+**PerfTester attribute** tells NPerf framework this class is a test fixture, in this case, for the target type IList<int>.
+*20* is the number of times a test method is going to be executed.
+*Description* is a text thatwill be placed on top of the results charts.
+And *FeatureDescription* is a label for the X axis that describes the variable for this experiment.
 ```C#
 [PerfTester(
     typeof(IList<int>),
@@ -139,9 +156,10 @@ public class IListPerfs
 }
 ```
 
-*PerfSetUp* attribute marks a method that prepares the IList<int> implementation instance before each running of a
+**PerfSetUp attribute** marks a method that prepares the IList<int> implementation instance before each running of a
 test method in a fixture.
 In this case, it adds as many elements to the list as the size calculated for the given test iteration (*testIndex*).
+This method has to have this signature (provided that the target interface is IList<int>).
 ```C#
 [PerfSetUp]
 public void SetUp(int testIndex, IList<int> list)
@@ -155,7 +173,9 @@ public void SetUp(int testIndex, IList<int> list)
 }
 ```
 
-*PerfTest* attribute indicates this is a test method. In this case, it simply adds a random integer to the list.
+**PerfTest attribute** indicates this is a test method.
+In this case, it simply adds a random integer to the list.
+Again, test methods have to have this signature (return *void* and accept one parameter of the target type).
 ```C#
 [PerfTest]
 public void Add(IList<int> list)
@@ -164,29 +184,69 @@ public void Add(IList<int> list)
 }
 ```
 
-BCL versus C5 IList&lt;T&gt; implementations
---------------------------------------
-Compared implementations:
-+ BCL: List&lt;T&gt;
-+ C5: ArrayList&lt;T&gt;
-+ C5: HashedArrayList&lt;T&gt;
-+ C5: LinkedList&lt;T&gt;
-+ C5: HashedLinkedList&lt;T&gt;
+The [rest of the test methods included in this fixture](IListNPerfs.cs) are similar to this one.
 
-#### Comparison for Insert method.
-Chart for insertion test. In this case, inserting an element at the beginning of the list.
+Finally there is a method that executes after each test.
+**PerfTearDown attribute** tells NPerf this is that method.
+In this case we simply use it to clear the tested list after the execution of the test, although it's not
+required in this case because a new instance of the target type is created for each test.
+This method is useful if you use IO resources or you want to assert conditions after a test.
+```C#
+[PerfTearDown]
+public void TearDown(IList<int> list)
+{
+    list.Clear();
+}
+```
 
-> The chart shows how C5 HashedArrayList has linear time complexity for inserting at the beginning,
-> while the rest have constant time complexity.
 
-![NPerfRunner](/docs/img/NPerf.Fixture.IList_InsertAtTheBeginning_BCLvsC5_Time.png)
+### BCL versus C5 IList&lt;T&gt; implementations
 
-*You can see theoretical complexity for C5 IList implementations methods at [C5 Library Technical Report][C5TR] (Chapter 12, page 233)*.
+Using NPerf.Fixture.IList we compared the performance of several System.Collections.Generic.IList<T> implementations
+from these two libraries:
++ **.NET Base Class Library (BCL)**: Located in the assembly mscorlib.dll.
+    + http://msdn.microsoft.com/en-us/library/gg145045.aspx
++ **C5 Library**: There's a copy into NPerfRunner/src/libs folder for testing.
+    + Homepage: http://www.itu.dk/research/c5/
+    + GitHub repository: https://github.com/sestoft/C5/
+    + Nuget package: http://www.nuget.org/packages/C5
+
+Compared IList&lt;T&gt; implementations:
++ BCL List&lt;T&gt;
++ C5 ArrayList&lt;T&gt;
++ C5 HashedArrayList&lt;T&gt;
++ C5 LinkedList&lt;T&gt;
++ C5 HashedLinkedList&lt;T&gt;
 
 #### Comparison for Contains method.
 Chart for *contains* test. This method tests whether an element is in the list or not.
 
+It shows that **checking whether an element is in a list or not in hashed lists have constant time complexity**
+while the same operation in **non-hashed list have linear time complexity**.
+
 ![NPerfRunner](/docs/img/NPerf.Fixture.IList_Contains_BCLvsC5_Time.png)
+
+#### Comparison for Insert method.
+Chart for insertion test. In this case, inserting an element at the beginning of the list.
+
+The following chart shows how C5 HashedArrayList, C5 ArrayList and BCL List has linear time complexity for
+inserting at the beginning, while the LinkedLists from C5 have constant time complexity.
+
+> Note the time axis has logarithmic scale.
+
+![NPerfRunner](/docs/img/NPerf.Fixture.IList_InsertAtTheBeginning_BCLvsC5_Log-Time.png)
+
+Although both array-based C5 IList implementations and BCL List have O(n) time complexity for inserting at the beginning,
+C5 HashedArrayList have a greater constant according to the chart.
+
+You can better see that C5 ArrayList and BCL List have linear time complexity for inserting at the beginning operation
+looking at the following chart that shows only results of the two implementations.
+
+![NPerfRunner](/docs/img/NPerf.Fixture.IList_InsertAtTheBeginning_C5-ArrayList_BCL-List_Time.png)
+
+> *You can see theoretical complexity for C5 IList implementations methods at [C5 Library Technical Report][C5TR] (Chapter 12, page 233)*.
+
+There are more test results screenshots comparing BCL with C5 in this repository [at /docs/img/][https://github.com/Orcomp/NPerfRunner/docs/img/]
 
 
 
