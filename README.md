@@ -93,6 +93,20 @@ Let's suppose your base folder is "PerformanceTest”, then the structure must b
 How it works
 ============
 
+NPerf.Fixtures repository
+-------------------------
+This repository contains several example NPerf fixtures that you can run with NPerfRunner.
+You can find it at https://github.com/Orcomp/NPerf.Fixtures.
+
+In order to try them, do this:
+
+1. Clone the repository (or download and extract the ZIP) to your base folder (the same as NPerf and NPerfRunner).
+2. Open /NPerf.Fixtures/src/NPerf.Fixtures.sln and build it.
+3. Launch NPerf Runner WPF application and load the assemblies you want from /NPerf.Fixtures/output/.
+
+> There is a copy of C5 library at /NPerf.Fixtures/lib/ if you want to test some of its classes.
+
+
 NPerf.Fixture.ISorter example
 -----------------------------
 These test fixture compares different sorting algorithms for lists.
@@ -119,7 +133,7 @@ and a set of algorithms with **logarithmic time complexity (e.g. ShellSort)**.
 NPerf.Fixture.IList example
 ---------------------------
 
-In the **NPerfRunner solution** there is a **project called NPerf.Fixture.IList**.
+Into **NPerf.Fixtures solution** there is a **project called NPerf.Fixture.IList**.
 Into this project there is a **class called IListPerfs** that has an NPerf test fixture.
 
 **This fixture allows you to compare several operations of an IList&lt;T&gt; implementation** such as:
@@ -204,7 +218,7 @@ Using NPerf.Fixture.IList we compared the performance of several System.Collecti
 
 + **.NET Base Class Library (BCL)**: Located in the assembly mscorlib.dll.
     + http://msdn.microsoft.com/en-us/library/gg145045.aspx
-+ **C5 Library**: There's a copy into NPerfRunner/src/libs folder for testing.
++ **C5 Library**: There's a copy into NPerf.Fixtures/lib/ folder for testing.
     + Homepage: http://www.itu.dk/research/c5/
     + GitHub repository: https://github.com/sestoft/C5/
     + Nuget package: http://www.nuget.org/packages/C5
@@ -272,7 +286,7 @@ This will happen if you install C5 nuget package or you build the solution from 
 
 So try this:
 
-+ Use C5 assembly at [...]/NPerfRunner/src/libs/C5/C5.dll (targeted to .NET Framework 4).
++ Use C5 assembly at [...]/NPerf.Fixtures/lib/C5/C5.dll (targeted to .NET Framework 4).
 
 
 <!-- LINKED REFERENCES -->
