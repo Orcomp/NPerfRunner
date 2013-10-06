@@ -1,0 +1,19 @@
+﻿<Window x:Class="NPerfRunner.Wpf.Views.ConfigurationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Perf Test Global Configuration" Width="400" Height="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <xctk:PropertyGrid x:Name="_propertyGrid" SelectedObjectName="Perf Test Global Configuration" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="0">
+        </xctk:PropertyGrid>
+        <Button Content="Save and Close" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Save_Button_Click" Grid.Row="1" Grid.Column="0"/>
+        <Button Content="Discard and Close" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Close_Button_Click" Grid.Row="1" Grid.Column="0"/>
+    </Grid>
+</Window>

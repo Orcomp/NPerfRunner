@@ -10,6 +10,8 @@
     using NPerf.Core.PerfTestResults;
     using NPerf.Lab;
     using NPerfRunner.ViewModels;
+    using NPerfRunner.Wpf.Properties;
+
     using OxyPlot;
     using OxyPlot.Axes;
     using OxyPlot.Series;
@@ -24,8 +26,12 @@
 
         private FrameworkElement view;
 
+        private PerfTestConfiguration perfTestConfiguration;
+
         public ChartViewModel(PerfLab lab, TestSuiteInfo suiteInfo)
-        {
+        {            
+            this.perfTestConfiguration = new PerfTestConfiguration(Settings.Default.IgnoreFirstRunDueToJITting, Settings.Default.TriggerGCBeforeEachTest);
+
             this.Title = suiteInfo.TestSuiteDescription;
 
             Lab = lab;
@@ -175,7 +181,7 @@
                 () =>
                     {
                         subscription = this.Lab.Run(tests.Select(x => x.TestId)
-                                                         .ToArray(), StartValue, StepValue, EndValue, false)
+                                                         .ToArray(), StartValue, StepValue, EndValue, this.perfTestConfiguration, false)
                                            .Subscribe(
                                                res => MessageBus.Current.SendMessage(res),
                                                ex =>
@@ -195,7 +201,7 @@
                 () =>
                     {
                         subscription = this.Lab.Run(tests.Select(x => x.TestId)
-                                                         .ToArray(), StartValue, StepValue, EndValue, true)
+                                                         .ToArray(), StartValue, StepValue, EndValue, this.perfTestConfiguration, true)
                                            .Subscribe(
                                                res => MessageBus.Current.SendMessage(res),
                                                ex => { IsStarted = false; },
@@ -205,6 +211,7 @@
 
         private void PrepareStart()
         {
+            this.perfTestConfiguration = new PerfTestConfiguration(Settings.Default.IgnoreFirstRunDueToJITting, Settings.Default.TriggerGCBeforeEachTest);
             IsStarted = true;
 
             foreach (var series in memorySeries.Select(m => m.Value)
