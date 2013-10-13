@@ -12,7 +12,8 @@
                 <ListBox MinHeight="100" MaxHeight="150" ItemsSource ="{Binding LoadedAssemblies}" />
             </ScrollViewer>
             <Button Command="{Binding LoadAssembly}">Load asembly</Button>
-            <Button Command="{Binding ClearAssembliesList}">Clear</Button>            
+            <Button Command="{Binding ClearAssembliesList}">Clear</Button>
+            <Button x:Name="LaunchConfigurationButton" Click="LaunchConfigurationWindow">Configuration</Button>
         </StackPanel>
         
         <ScrollViewer>

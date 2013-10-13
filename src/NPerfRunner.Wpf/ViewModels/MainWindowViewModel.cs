@@ -91,14 +91,16 @@
                 commonData.Lab = null;
             }
 
-            if (assemblies.Any() && commonData.Lab == null)
+            if (assemblies.Any())
             {
-                commonData.Lab = new PerfLab(commonData.LoadedAssemblies.Union(assemblies).ToArray());
-            }
-
-            if (assemblies.Any() && commonData.Lab != null)
-            {
-                commonData.Lab.AddAssemblies(assemblies);
+                if (commonData.Lab == null)
+                {
+                    commonData.Lab = new PerfLab(commonData.LoadedAssemblies.Union(assemblies).ToArray());
+                }
+                else
+                {
+                    commonData.Lab.AddAssemblies(assemblies);
+                }
             }
 
             foreach (var assembly in assemblies)
