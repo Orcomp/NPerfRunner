@@ -113,3 +113,11 @@ UpgradeLog*.XML
 # SQL Server files
 App_Data/*.mdf
 App_Data/*.ldf
+
+# NuGet.key
+[Nn]u[Gg]et.key
+ 
+# FAKE build
+tools/FAKE
+build-log.xml
+build-log.txt

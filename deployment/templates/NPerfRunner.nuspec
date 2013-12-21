@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>NPerfRunner</id>
+    <version>@build.number@</version>
+	<title>NPerfRunner</title>
+    <authors>ovidiomanteiga,OrchestraDevs,sidlovskyy</authors>
+    <owners>ovidiomanteiga,OrchestraDevs,sidlovskyy</owners>
+
+	<description>
+	  The tool to run your NPerf performance tests
+	</description>
+	<summary>
+	</summary>
+	
+	<tags>nunit perfomance nperf</tags>
+	<language>en-US</language>
+	<projectUrl>https://github.com/tchief/NPerfRunner</projectUrl>
+  </metadata>
+</package>
