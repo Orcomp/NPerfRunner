@@ -15,6 +15,6 @@
 	
 	<tags>nunit perfomance nperf</tags>
 	<language>en-US</language>
-	<projectUrl>https://github.com/tchief/NPerfRunner</projectUrl>
+	<projectUrl>https://github.com/Orcomp/NPerfRunner</projectUrl>
   </metadata>
 </package>
