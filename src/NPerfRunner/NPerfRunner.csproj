@@ -45,6 +45,15 @@
     <Reference Include="NLog">
       <HintPath>..\..\packages\NLog.2.0.1.2\lib\net40\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="NPerf.Core">
+      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NPerf.Framework">
+      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="NPerf.Lab">
+      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Lab.dll</HintPath>
+    </Reference>
     <Reference Include="OxyPlot">
       <HintPath>..\..\packages\OxyPlot.Core.2013.1.52.1\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
     </Reference>
@@ -137,20 +146,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\NPerf\src\NPerf.Core\NPerf.Core.csproj">
-      <Project>{37A29AA9-677B-466B-88F0-90D54E2361CF}</Project>
-      <Name>NPerf.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NPerf\src\NPerf.Framework\NPerf.Framework.csproj">
-      <Project>{9AE192A6-2C53-4765-8C73-BAD2C030EF0A}</Project>
-      <Name>NPerf.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NPerf\src\NPerf.Lab\NPerf.Lab.csproj">
-      <Project>{7D998325-0A28-4A30-9D7C-C162C8F9B715}</Project>
-      <Name>NPerf.Lab</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

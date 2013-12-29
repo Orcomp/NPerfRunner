@@ -29,7 +29,7 @@ let version = File.ReadAllText(@".\version.txt")
 let solutionAssemblyInfoPath = srcDir @@ "SolutionInfo.cs"
 let projectsToPackageAssemblyNames = ["NPerfRunner";]
 ////let binProjectDependencies:^string list = ["NPerf"; "fastJSON"; "Orc"; "C5"; "Langman.TreeDictionary"]
-let projectsToPackageDependencies:^string list = ["AvalonDock"; "Microsoft.Bcl"; "Microsoft.Bcl.Async"; "Microsoft.Bcl.Build"; "NLog"; 
+let projectsToPackageDependencies:^string list = ["AvalonDock"; "Microsoft.Bcl"; "Microsoft.Bcl.Async"; "Microsoft.Bcl.Build"; "NLog"; "NPerf";
                                            "OxyPlot.Core"; "OxyPlot.Wpf"; "reactiveui"; "reactiveui-core"; "reactiveui-nlog"; 
                                            "reactiveui-xaml"; "Rx-Core"; "Rx-Interfaces"; "Rx-Linq"; "Rx-Main";
                                            "Rx-PlatformServices"; "Rx-XAML";]

@@ -69,6 +69,15 @@
     <Reference Include="NLog">
       <HintPath>..\..\packages\NLog.2.0.1.2\lib\net40\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="NPerf.Core">
+      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NPerf.Framework">
+      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="NPerf.Lab">
+      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Lab.dll</HintPath>
+    </Reference>
     <Reference Include="OxyPlot, Version=2013.1.52.1, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\OxyPlot.Core.2013.1.52.1\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
@@ -251,22 +260,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NPerf\src\NPerf.Core\NPerf.Core.csproj">
-      <Project>{37A29AA9-677B-466B-88F0-90D54E2361CF}</Project>
-      <Name>NPerf.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NPerf\src\NPerf.Experiment\NPerf.Experiment.csproj">
-      <Project>{D6C90823-9769-4DA2-9177-3B22739DF1FB}</Project>
-      <Name>NPerf.Experiment</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NPerf\src\NPerf.Framework\NPerf.Framework.csproj">
-      <Project>{9AE192A6-2C53-4765-8C73-BAD2C030EF0A}</Project>
-      <Name>NPerf.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NPerf\src\NPerf.Lab\NPerf.Lab.csproj">
-      <Project>{7D998325-0A28-4A30-9D7C-C162C8F9B715}</Project>
-      <Name>NPerf.Lab</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NPerfRunner\NPerfRunner.csproj">
       <Project>{3af06edc-3da3-4c07-914b-e48d5da857ac}</Project>
       <Name>NPerfRunner</Name>
