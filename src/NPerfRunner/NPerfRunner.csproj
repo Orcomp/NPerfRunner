@@ -46,13 +46,13 @@
       <HintPath>..\..\packages\NLog.2.0.1.2\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NPerf.Core">
-      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Core.dll</HintPath>
+      <HintPath>..\..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Core.dll</HintPath>
     </Reference>
     <Reference Include="NPerf.Framework">
-      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Framework.dll</HintPath>
+      <HintPath>..\..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Framework.dll</HintPath>
     </Reference>
     <Reference Include="NPerf.Lab">
-      <HintPath>..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Lab.dll</HintPath>
+      <HintPath>..\..\packages\NPerf.1.0.0.0\lib\NET40\NPerf.Lab.dll</HintPath>
     </Reference>
     <Reference Include="OxyPlot">
       <HintPath>..\..\packages\OxyPlot.Core.2013.1.52.1\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
