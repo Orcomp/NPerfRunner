@@ -69,17 +69,14 @@
     <Reference Include="NLog">
       <HintPath>..\..\packages\NLog.2.0.1.2\lib\net40\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="NPerf.Core, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NPerf.1.0.5.0\lib\NET45\NPerf.Core.dll</HintPath>
+    <Reference Include="NPerf.Core">
+      <HintPath>..\..\packages\NPerf.1.0.7.0\lib\NET45\NPerf.Core.dll</HintPath>
     </Reference>
-    <Reference Include="NPerf.Framework, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NPerf.1.0.5.0\lib\NET45\NPerf.Framework.dll</HintPath>
+    <Reference Include="NPerf.Framework">
+      <HintPath>..\..\packages\NPerf.1.0.7.0\lib\NET45\NPerf.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="NPerf.Lab, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NPerf.1.0.5.0\lib\NET45\NPerf.Lab.dll</HintPath>
+    <Reference Include="NPerf.Lab">
+      <HintPath>..\..\packages\NPerf.1.0.7.0\lib\NET45\NPerf.Lab.dll</HintPath>
     </Reference>
     <Reference Include="OxyPlot, Version=2014.1.1.1, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
