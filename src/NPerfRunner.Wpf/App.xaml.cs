@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Reflection;
+    using System.Threading;
     using System.Windows;
 
     using NPerf.Core.Tools;
@@ -17,7 +18,7 @@
     public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)
-        {            
+        {
             InfrastructureInstaller.Install();
             UserError.RegisterHandler((Func<UserError, IObservable<RecoveryOptionResult>>)IoC.Instance.Resolve<ErrorHandler>().HandleError);
             base.OnStartup(e);
