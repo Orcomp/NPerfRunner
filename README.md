@@ -264,16 +264,6 @@ Try this:
 + Enable NuGet package restore and reload the solution. 
 + If it still can't load it, run `nuget install [...]/NPerfRunner/src/NPerfRunner/packages.config` in a console.
 
-#### Exception raised when loading C5 library.
-
-The C5 library targets ".NET Portable Class library" (PCL), that's why NPerfRunner can't load referenced assemblies from it.
-The exception may tell you it couldn't load *System.Core version=2.0.5* (part of the .NET PCL).
-This will happen if you install C5 nuget package or you build the solution from the official C5 repositories.
-
-So try this:
-
-+ Use C5 assembly at [...]/NPerfRunner/src/libs/C5/C5.dll (targeted to .NET Framework 4).
-
 
 <!-- LINKED REFERENCES -->
 [NPerfProject]: https://github.com/Orcomp/NPerf
