@@ -1,3 +1,6 @@
+Deprecated: Please visit [NUnitBenchmarker](https://github.com/Orcomp/NUnitBenchmarker)
+
+
 NPerfRunner
 ===========
 The tool to run your NPerf performance tests
